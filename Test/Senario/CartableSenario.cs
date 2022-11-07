@@ -17,7 +17,7 @@ namespace Test.Senario
         public void NewMemoRandom( )
         {
             LoginPage loginPage= new LoginPage(driver);
-            loginPage.Login( "administrator", "1" );
+            loginPage.Login_Succeed( "administrator", "1" );
             driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
             ShellPage shellPage = new ShellPage(driver);
             shellPage.OpenOfficeAutomation( );

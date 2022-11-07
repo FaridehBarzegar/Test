@@ -16,11 +16,25 @@ namespace Test.Pages
             this.driver = driver;
         }
 
-        public IWebElement Txtusername =>driver.FindElement(By.Name( "Username" ) );
-        public IWebElement Txtpassword =>driver.FindElement(By.Id( "Password" ) );
-        public IWebElement Btnlogin =>driver.FindElement(By.Id( "login-button" ) );
+        public IWebElement Txtusername          =>driver.FindElement(By.Name( "Username" ) );
+        public IWebElement Txtpassword          =>driver.FindElement(By.Id( "Password" ) );
+        public IWebElement Btnlogin             =>driver.FindElement(By.Id( "login-button" ) );
+        public IWebElement LinkForgotPassword   =>driver.FindElement(By.Id( "ForgetPasword_link" ));
+        public IWebElement LabelVersionNumber   =>driver.FindElement(By.LinkText( "1.000.00 : ویرایش" ));
+        public IWebElement LabelEnglishLanguage =>driver.FindElement(By.LinkText( "English" ) );
+        public IWebElement LabelPersianLanguage =>driver.FindElement(By.LinkText( "فارسی" ) );
 
-        public void Login( string username, string password )
+        public void Login_SucceedLoadPage( )
+        {
+            bool txtUserName     = Txtusername.Displayed;
+            bool txtPssword      = Txtpassword.Displayed;
+            bool btnLogin        = Btnlogin.Displayed;
+            bool forgotPassword  = LinkForgotPassword.Displayed;
+            bool versionNumber   = LabelVersionNumber.Displayed;
+            bool englishLanguage = LabelEnglishLanguage.Displayed;
+            bool persianLanguage = LabelPersianLanguage.Displayed;
+        }
+        public void Login_Succeed( string username, string password )
         {
             Txtusername.SendKeys( username );
             Txtpassword.SendKeys( password );
