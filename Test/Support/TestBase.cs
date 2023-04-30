@@ -18,17 +18,14 @@ namespace Test.Support
         {
             driver = new ChromeDriver( );
             driver.Manage( ).Window.Maximize( );
-            driver.Navigate( ).GoToUrl( "https://192.168.12.145" );
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
-
+            driver.Navigate( ).GoToUrl( "http://localhost:8084/" );
         }
         [TearDown]
         public void CloseDriver( )
         {
-            driver.Close();
+            driver.Close( );
             driver.Quit( );
             driver.Dispose( );
-            
         }
     }
 }

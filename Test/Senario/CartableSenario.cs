@@ -9,23 +9,49 @@ using Test.Support;
 
 namespace Test.Senario
 {
-    public class CartableSenario:TestBase
+    public class CartableSenario: AutomationSenarioBase
     {
-        
-         
+        [Test,Order(1)]
+        public void CartableLoad( )
+        {
+            CartablePage cartablePage = new CartablePage(driver);
+            cartablePage.CardtableLoaded( );
+            cartablePage.BackToShell( );
+        }
         [Test]
+        public void CartableFollowupLoaded( )
+        {
+            CartablePage cartablePage = new CartablePage(driver);
+            cartablePage.CardtableLoaded( );
+            cartablePage.LoadFollowupCartable( );
+            cartablePage.BackToShell( );
+        }
+        [Test,Order((2))]
         public void NewMemoRandom( )
         {
-            LoginPage loginPage= new LoginPage(driver);
-            loginPage.Login_Succeed( "administrator", "1" );
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
-            ShellPage shellPage = new ShellPage(driver);
-            shellPage.OpenOfficeAutomation( );
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.Memorandom( );
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
-
+            cartablePage.CardtableLoaded( );
+            cartablePage.NewMemorandom( );
+            MemorandomPage memorandomPage = new MemorandomPage(driver);
+            memorandomPage.NewMemorandomLoaded( );
+            cartablePage.BackToShell( );
+        }
+        [Test,Order(3)]
+        public void OpenDraft( )
+        {
+            CartablePage cartablePage = new CartablePage(driver);
+            cartablePage.CardtableLoaded( );
+            cartablePage.OpenDraft( );
+            DraftPage draftPage = new DraftPage(driver);
+            draftPage.DraftPageLoad( );
+            cartablePage.BackToShell( );
+        }
+        [Test,Order(4)]
+        public void BackToShell( )
+        {
+            CartablePage cartablePage = new CartablePage(driver);
+            cartablePage.BackToShell( );
+        
         }
     }
 }
