@@ -14,23 +14,24 @@ namespace Test.Senario
         public void DraftLoad( )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.OpenDraft( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenDraft( );
             DraftPage draftPage = new DraftPage(driver);
             draftPage.DraftPageLoad( );
-            cartablePage.BackToShell( );
+            cartablePage.CartableBackToShell( );
         }
-
-        [Test]
-        public void MemorandomDraftLoad( )
+          [Test]
+        public void DraftMemorandomOpenSucced( )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.OpenDraft( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenDraft( );
             DraftPage draftPage = new DraftPage(driver);
             draftPage.DraftPageLoad( );
-            draftPage.MemorandomDraftLoad( );
-            cartablePage.BackToShell( );
+            draftPage.OpenSuccedMemorandomDraft( );
+            cartablePage.CartableBackToShell( );
         }
+
+     
     }
 }

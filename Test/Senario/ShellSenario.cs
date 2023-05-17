@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Data;
 using Test.Pages;
 using Test.Support;
 
@@ -12,44 +13,30 @@ namespace Test.Senario
 {
     public class ShellSenario : TestBase
     {
-        [Test,Order(1)]
-
-        public void LoadShell( )
+        [Test]
+        public void ShellLoadPage( )
         {
             LoginPage loginPage= new LoginPage(driver);
-            loginPage.Login_Succeed( "ahmadi", "1" );
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
+            loginPage.LoginSucceed( LoginData.userLoginAhmadi );
             ShellPage shellPage = new ShellPage(driver);
-            shellPage.ShellPageLoad( );
+            shellPage.ShellLoadPage();
             LogoutPage logoutPage = new LogoutPage(driver);
-            logoutPage.Logout_Succeed( );
+            logoutPage.LogoutSucceed( );
         }
 
-        [Test,Order(2)]
-        public void OpenSucceedOfficeAutomation( )
+        [Test]
+        public void ShellOpenOfficeAutomation( )
         {
-            LoginPage loginPage= new LoginPage(driver);
-            loginPage.Login_Succeed( "ahmadi", "1" );
-            ShellPage shellPage = new ShellPage(driver);
-            shellPage.ShellPageLoad( );
+            LoginPage loginPage= new LoginPage( driver );
+            loginPage.LoginSucceed( LoginData.userLoginAhmadi );
+            ShellPage shellPage = new ShellPage( driver );
+            shellPage.ShellLoadPage( );
             shellPage.OpenOfficeAutomation( );
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.BackToShell( );
-            LogoutPage logoutPage = new LogoutPage(driver);
-            logoutPage.Logout_Succeed( );
+            CartablePage cartablePage = new CartablePage( driver );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableBackToShell( );
+            LogoutPage logoutPage = new LogoutPage( driver );
+            logoutPage.LogoutSucceed( );
         }
-        //  [Test]
-        //public void LogOut( )
-        //{
-        //    LoginPage loginPage= new LoginPage(driver);
-        //    loginPage.Login_SucceedLoadPage( );
-        //    loginPage.Login_Succeed( "administrator", "1" );
-
-        //    ShellPage shellPage = new ShellPage(driver);
-        //    shellPage.ShellPageLoad( );
-        //    //answer question
-        //    shellPage.LogOut( );
-        //}
     }
 }

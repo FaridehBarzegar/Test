@@ -7,31 +7,35 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.Pages;
 using Test.Support;
-using  Test.Data;
+using Test.Data;
+
+
+
+using NUnit.Framework;
+using OfficeOpenXml;
+using System.Reflection;
+using OpenQA.Selenium.DevTools.V111.Database;
 
 namespace Test.Senario
 {
     public class LoginSenario:TestBase
     {
-
         [Test]
         public void LoadLoginPage( )
         {
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.Login_SucceedLoadPage( );
+            loginPage.LoginLoadPage( );
         }
-        
-        [Test]
-        public void LoginSucceed( )
+       // [Test,TestCaseSource (typeof(LoginData),nameof(LoginData.ReadExcell))]
+        [Test,TestCaseSource( typeof( LoginData ), nameof( LoginData.roots ))]
+        public void LoginSucceed(UserLogin userLogin)
         {
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.Login_SucceedLoadPage( );
-            loginPage.Login_Succeed( LoginData.userNameAdmin, LoginData.passwordAdmin );
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
-            string m_txtShellHeader = driver.FindElement(By.ClassName("top-Payvast-Title")).Text;
-            StringAssert.AreEqualIgnoringCase( "سازمان الکترونیک پیوست", m_txtShellHeader );
+            loginPage.LoginLoadPage( );
+            loginPage.LoginSucceed( userLogin );
+            driver.Manage( ).Timeouts( ).ImplicitWait = TimeSpan.FromSeconds( 5 );
             LogoutPage logoutPage = new LogoutPage(driver);
-            logoutPage.Logout_Succeed( );
+            logoutPage.LogoutSucceed( );
 
         }
     }

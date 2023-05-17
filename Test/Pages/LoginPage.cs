@@ -4,37 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Data;
+
 namespace Test.Pages
 {
     public class LoginPage
     {
-        public IWebDriver driver;
-        public LoginPage( IWebDriver driver )
-        {
-            this.driver = driver;
-        //    Login_SucceedLoadPage( );
-        }
-       // private static bool m_IsLogedIn;
-        //public bool IsLogedIn
-        //{
-        //    get
-        //    {
-        //        if ( !m_IsLogedIn )
-        //            Login_Succeed( "administrator", "1" );
-        //        return m_IsLogedIn;
-        //    }
-        //}
-        public IWebElement m_Txtusername => driver.FindElement( By.Name( "Username" ));
+        private IWebDriver driver;
+        private IWebElement m_Txtusername => driver.FindElement( By.Name( "Username" ));
         private IWebElement m_Txtpassword => driver.FindElement( By.Id( "Password" ));
         private IWebElement m_Btnlogin => driver.FindElement( By.Id( "login-button" ));
         private IWebElement m_LinkForgotPassword => driver.FindElement( By.Id( "ForgetPasword_link" ));
         private IWebElement m_LabelVersionNumber => driver.FindElement( By.LinkText( "1.000.00 : ویرایش" ));
         private IWebElement m_LabelEnglishLanguage => driver.FindElement( By.LinkText( "English" ));
         private IWebElement m_LabelPersianLanguage => driver.FindElement( By.LinkText( "فارسی" ));
-
-        public void Login_SucceedLoadPage( )
+        public LoginPage( IWebDriver driver )
         {
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
+            this.driver = driver;
+        }
+
+        public void LoginLoadPage( )
+        {
+            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 15 );
             Assert.AreEqual( true, m_Txtusername.Displayed );
             Assert.AreEqual( true, m_Txtpassword.Displayed );
             Assert.AreEqual( true, m_Btnlogin.Displayed );
@@ -43,12 +34,21 @@ namespace Test.Pages
             Assert.AreEqual( "فارسی", m_LabelPersianLanguage.Text );
             Assert.AreEqual( "English", m_LabelEnglishLanguage.Text );
         }
-        public void Login_Succeed( string username, string password )
+        public void LoginSucceed( UserLogin userLogin )
         {
             driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
-            m_Txtusername.SendKeys( username );
-            m_Txtpassword.SendKeys( password );
+            m_Txtusername.SendKeys( userLogin.userName );
+            m_Txtpassword.SendKeys( userLogin.password );
             m_Btnlogin.Click( );
+            try
+            {
+                driver.SwitchTo( ).Alert( ).Accept( );
+            }
+            catch ( NoAlertPresentException ex )
+            {
+                string m_txtShellHeader = driver.FindElement(By.ClassName("top-Payvast-Title")).Text;
+                StringAssert.AreEqualIgnoringCase( "سازمان الکترونیک پیوست", m_txtShellHeader );
+            }
         }
     }
 }

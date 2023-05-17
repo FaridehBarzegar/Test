@@ -36,12 +36,14 @@ namespace Test.Pages
 
         }
 
-        public void MemorandomDraftLoad( )
+        public void OpenSuccedMemorandomDraft( )
         {
             webDriverWait = new WebDriverWait( driver, TimeSpan.FromSeconds( 8 ) );
             IWebElement m_BtnMemorandomPanel= webDriverWait.Until( ExpectedConditions.ElementIsVisible( By.LinkText( "یادداشت اداری" )));
             m_BtnMemorandomPanel.Click( );
             Assert.AreEqual( "یادداشت اداری", m_BtnMemorandomPanel.Text);
         }
+
+       
     }
 }

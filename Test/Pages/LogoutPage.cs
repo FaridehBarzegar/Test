@@ -15,10 +15,10 @@ namespace Test.Pages
         {
             this.driver = driver;
         }
-        public void Logout_Succeed( )
+        public void LogoutSucceed( )
         {
             driver.Manage( ).Timeouts( ).ImplicitWait = TimeSpan.FromSeconds( 5 );
-            m_BtnExit.Click();
+            m_BtnExit.Click( );
        }
 
     }

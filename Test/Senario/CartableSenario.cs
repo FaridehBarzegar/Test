@@ -11,46 +11,46 @@ namespace Test.Senario
 {
     public class CartableSenario: AutomationSenarioBase
     {
-        [Test,Order(1)]
+        [Test]
         public void CartableLoad( )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.BackToShell( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableBackToShell( );
         }
         [Test]
-        public void CartableFollowupLoaded( )
+        public void CartableOpenFollowUp( )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.LoadFollowupCartable( );
-            cartablePage.BackToShell( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenFollowUp( );
+            cartablePage.CartableBackToShell( );
         }
-        [Test,Order((2))]
-        public void NewMemoRandom( )
+        [Test]
+        public void CartableOpenCreateMemorandom( )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.NewMemorandom( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenCreateMemorandom( );
             MemorandomPage memorandomPage = new MemorandomPage(driver);
-            memorandomPage.NewMemorandomLoaded( );
-            cartablePage.BackToShell( );
+            memorandomPage.MemorandomCreateLoadPage( );
+            cartablePage.CartableBackToShell( );
         }
-        [Test,Order(3)]
-        public void OpenDraft( )
+        [Test]
+        public void CartableOpenDraft( )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.OpenDraft( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenDraft( );
             DraftPage draftPage = new DraftPage(driver);
             draftPage.DraftPageLoad( );
-            cartablePage.BackToShell( );
+            cartablePage.CartableBackToShell( );
         }
-        [Test,Order(4)]
-        public void BackToShell( )
+        [Test]
+        public void CartableBackToShell( )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.BackToShell( );
+            cartablePage.CartableBackToShell( );
         
         }
     }

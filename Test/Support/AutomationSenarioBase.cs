@@ -21,22 +21,30 @@ namespace Test.Support
             driver.Manage( ).Window.Maximize( );
             driver.Navigate( ).GoToUrl( BaseCartableData.Url );
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.Login_SucceedLoadPage( );
-            loginPage.Login_Succeed( LoginData.userNameAdmin, LoginData.passwordAdmin );
+            loginPage.LoginLoadPage( );
+            loginPage.LoginSucceed( LoginData.userLoginAhmadi );
             ShellPage shellPage = new ShellPage(driver);
-            shellPage.ShellPageLoad( );
+            shellPage.ShellLoadPage();
             shellPage.OpenOfficeAutomation( );
             
         }
         [TearDown]
         public void CloseDriver( )
         {
-            LogoutPage logoutPage = new LogoutPage(driver);
-            logoutPage.Logout_Succeed( );
-            driver.Close();
-            driver.Quit( );
-            driver.Dispose( );
-            
+            try
+            {
+             LogoutPage logoutPage = new LogoutPage(driver);
+             logoutPage.LogoutSucceed( );
+             driver.Close( );
+             driver.Quit( );
+             driver.Dispose( );
+            }
+            catch
+            {
+             driver.Close();
+             driver.Quit( );
+             driver.Dispose( );
+            }
         }
     }
 }

@@ -3,57 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Data;
 using Test.Pages;
 using Test.Support;
 
 namespace Test.Senario
 {
-    public class MemoRandomSenario : AutomationSenarioBase
+    public class MemorandomSenario : AutomationSenarioBase
     {
         [Test]
-        public void NewMemorandomLoaded( )
+        public void MemorandomCreateLoadPage( )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.NewMemorandom( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenCreateMemorandom( );
             MemorandomPage memorandomPage = new MemorandomPage(driver);
-            memorandomPage.NewMemorandomLoaded( );
-            cartablePage.BackToShell( );
+            memorandomPage.MemorandomCreateLoadPage( );
+            cartablePage.CartableBackToShell( );
         }
 
-        [Test]
-        public void SaveNewMemorandom( )
+        [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.ReadMemorandomFromExcell))]
+        public void MemorandomSave(Memorandom memorandom)
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.NewMemorandom( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenCreateMemorandom( );
             MemorandomPage memorandomPage = new MemorandomPage(driver);
-            memorandomPage.NewMemorandomLoaded( );
-            memorandomPage.SaveNewMemorandom( );
-            cartablePage.BackToShell( );
+            memorandomPage.MemorandomCreateLoadPage( );
+            memorandomPage.MemorandomSave(  memorandom);
+            cartablePage.CartableBackToShell( );
 
         }
-        [Test]
-        public void SendMemorandom( )
+        [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.ReadMemorandomFromExcell))]
+        public void MemorandomSend(Memorandom memorandom )
         {
             CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.NewMemorandom( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenCreateMemorandom( );
             MemorandomPage memorandomPage= new MemorandomPage(driver);
-            memorandomPage.NewMemorandomLoaded( );
-            memorandomPage.SendNewMemorandom( );
-            cartablePage.BackToShell( );
+            memorandomPage.MemorandomCreateLoadPage( );
+            memorandomPage.MemorandomSend(memorandom);
+            cartablePage.CartableBackToShell( );
         }
-        [Test]
-        public void MemorandomSaveAndSend( )
+        [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.ReadMemorandomFromExcell))]
+        public void MemorandomSaveAndSend(Memorandom memorandom )
         {
             CartablePage cartablePage= new CartablePage(driver);
-            cartablePage.CardtableLoaded( );
-            cartablePage.NewMemorandom( );
+            cartablePage.CartableLoaded( );
+            cartablePage.CartableOpenCreateMemorandom( );
             MemorandomPage memorandomPage = new MemorandomPage(driver);
-            memorandomPage.NewMemorandomLoaded( );
-            memorandomPage.SaveAndSendNewMemorandom( );
-            cartablePage.BackToShell( );
+            memorandomPage.MemorandomCreateLoadPage( );
+            memorandomPage.SaveAndSendNewMemorandom( memorandom);
+            cartablePage.CartableBackToShell( );
         }
+       
     }
 }
