@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Public;
 
 namespace Test.Pages
 {
@@ -17,7 +18,7 @@ namespace Test.Pages
         }
         public void LogoutSucceed( )
         {
-            driver.Manage( ).Timeouts( ).ImplicitWait = TimeSpan.FromSeconds( 5 );
+            driver.ImplicitWaitFor( 5 );
             m_BtnExit.Click( );
        }
 

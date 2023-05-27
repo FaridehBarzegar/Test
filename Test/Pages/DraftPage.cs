@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using Test.Public;
 
 namespace Test.Pages
 {
@@ -8,6 +9,7 @@ namespace Test.Pages
     {
         private IWebDriver driver;
         private  WebDriverWait webDriverWait;
+
         public DraftPage( IWebDriver driver )
         {
             this.driver = driver;
@@ -24,8 +26,7 @@ namespace Test.Pages
         public void DraftPageLoad( )
         {
             CartablePage cartablePage = new CartablePage( driver );
-            webDriverWait = new WebDriverWait( driver, TimeSpan.FromSeconds( 7 ));
-            IWebElement m_BtnNewOutgoingLetter1= webDriverWait.Until( ExpectedConditions.ElementIsVisible( By.Id( "2bc68c0a-45b6-445d-910f-0813389ba951" )));
+            IWebElement m_BtnNewOutgoingLetter1=WaitManagement.WaitForLoadAnElementById( driver, 7 ,"2bc68c0a-45b6-445d-910f-0813389ba951" );
             Assert.AreEqual( "نامه صادره جدید", m_BtnNewOutgoingLetter1.Text );
             Assert.AreEqual( "نامه داخلی جدید", m_BtnNewInternalLetter.Text );
             Assert.AreEqual( "یادداشت اداری جدید", m_BtnNewMemorandom.Text );
@@ -38,8 +39,7 @@ namespace Test.Pages
 
         public void OpenSuccedMemorandomDraft( )
         {
-            webDriverWait = new WebDriverWait( driver, TimeSpan.FromSeconds( 8 ) );
-            IWebElement m_BtnMemorandomPanel= webDriverWait.Until( ExpectedConditions.ElementIsVisible( By.LinkText( "یادداشت اداری" )));
+            IWebElement m_BtnMemorandomPanel= WaitManagement.WaitForLoadAnElementByLinkText( driver, 7 ,"یادداشت اداری");
             m_BtnMemorandomPanel.Click( );
             Assert.AreEqual( "یادداشت اداری", m_BtnMemorandomPanel.Text);
         }

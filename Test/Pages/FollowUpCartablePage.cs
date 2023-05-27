@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Public;
 
 namespace Test.Pages
 {
@@ -21,9 +22,8 @@ namespace Test.Pages
 
         public void LoadFollowUpCartable( )
         {
-            driver.Manage( ).Timeouts( ).ImplicitWait = TimeSpan.FromSeconds(7);
-            webDriverWait = new WebDriverWait( driver, TimeSpan.FromSeconds( 7 ) );
-            IWebElement m_BtnNewOutgoingLetter= webDriverWait.Until( ExpectedConditions.ElementIsVisible( By.Id( "2bc68c0a-45b6-445d-910f-0813389ba951" )));
+           // driver.ImplicitWaitFor( 7 );
+            IWebElement m_BtnNewOutgoingLetter= WaitManagement.WaitForLoadAnElementById( driver , 7 , "2bc68c0a-45b6-445d-910f-0813389ba951" );
             Assert.AreEqual( true, m_BtnFollowUpCartable.Displayed );
             Assert.AreEqual( true, m_BtnNewOutgoingLetter.Displayed );
         }

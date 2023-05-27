@@ -23,9 +23,21 @@ namespace Test.Support
         [TearDown]
         public void CloseDriver( )
         {
-            driver.Close( );
-            driver.Quit( );
-            driver.Dispose( );
+            try
+            {
+                LogoutPage logoutPage = new LogoutPage( driver );
+                logoutPage.LogoutSucceed( );
+                
+            }
+            catch(Exception exp){
+                throw exp;
+                }
+            finally
+            {
+                driver.Close( );
+                driver.Quit( );
+                driver.Dispose( );
+            }
         }
     }
 }

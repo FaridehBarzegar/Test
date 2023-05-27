@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Aspose.Cells;
+using Newtonsoft.Json;
+using NUnit.Framework.Internal.Execution;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -7,30 +9,27 @@ using System.Reflection.Metadata;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Data.Object;
 
 namespace Test.Data
 {
-    public static class LoginData
+    public class LoginData
     {
-      public static UserLogin FindUserByUserName( string username )
+        public static UserLogin? FindUserByUserName( string username )
         {
-           IEnumerable<UserLogin> users = roots;
-            return  users.Where(u=>u.userName==username).FirstOrDefault();
-           // return users.Contains((new UserLogin { userName=userName }));
-                
-
-
+            //IEnumerable<UserLogin> users = roots;
+            return roots.FirstOrDefault( u => u.userName == username );
         }
         public static UserLogin userLoginAhmadi = new UserLogin()
-       {
-           userName="ahmadi",
-           password="1"
-       }; public static UserLogin userLoginRahimi = new UserLogin()
-       {
-           userName="rahimi",
-           password="1"
-       };
-       static string json = @"[
+        {
+            userName="ahmadi",
+            password="1"
+        }; public static UserLogin userLoginRahimi = new UserLogin()
+        {
+            userName="rahimi",
+            password="1"
+        };
+        static string json = @"[
         {
           'userName': 'ahmadi',
           'password': 1
@@ -50,53 +49,54 @@ namespace Test.Data
           'userName': 'razaghian',
           'password': '1'
          },
-{
+        {
           'userName': 'asadi',
           'password': '1'
-         }
+         },
+        {
+           'userName':'niknam',
+           'password':'1'
+        }
         ]";
-       public   static IEnumerable<UserLogin> roots = JsonConvert.DeserializeObject <IEnumerable<UserLogin>>(json);
-    
-       
-       
-        public static IEnumerable<UserLogin [ ]> ReadExcell( )
+        public  static IEnumerable<UserLogin> roots = JsonConvert.DeserializeObject<IEnumerable<UserLogin>>(json);
+        private static IEnumerable<UserLogin> s_userLoginsData = new List<UserLogin>();
+        public static IEnumerable<UserLogin> S_UserLoginData
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            FileInfo existingFile = new FileInfo("C:\\Users\\Administrator\\source\\repos\\Test\\Test\\Data\\Data.xlsx");
-          
-            using ( ExcelPackage package = new ExcelPackage( existingFile )  )
+            get
             {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets["LoginSuccess"];
-                int rowCount = worksheet.Dimension.End.Row;
-                // List<UserLogin> loginsuser = new List<UserLogin>();
-                for ( int i = 2 ; i <= rowCount ; i++ )
+                if( !s_userLoginsData.Any( ) )
                 {
-              UserLogin[] users = new UserLogin[]
-                {
-                  new UserLogin
-                    {
-                        userName = worksheet.Cells[ i, 1 ].Value?.ToString( ).Trim(),
-                        password = worksheet.Cells[ i, 2 ].Value?.ToString( ).Trim(),
-                    }
-                };
-                     yield  return users;
-                   // yield return new object[ ]
-                  //UserLogin login = new UserLogin()
-                  //  {
-                  //    userName=  worksheet.Cells[ i, 1 ].Value?.ToString( ).Trim(),
-                  //     password= worksheet.Cells[ i, 2 ].Value?.ToString( ).Trim()
-
-                  //  };
-                   
+                    s_userLoginsData = ReadExcell( );
+                }
+                return s_userLoginsData;
             }
-                  
-        } }
-        public static object[] LoginTestData=
+        }
+        public static IEnumerable<UserLogin> GetRandomUsers( int count = 1 )
         {
-               new object[]{ "ahmadi", "1" },
-               new object[]{"administrator", "1" },
-               new object[]{ "fatemi", "1" }
+            List<UserLogin> userLogins = new List<UserLogin>( );
+            for( int i = 0 ; i < count ; i++ )
+            {
+                int num = new Random().Next(0,S_UserLoginData.Count() - 1);
+                userLogins.Add( S_UserLoginData.ToArray( )[ num ] );
+            }
+            return userLogins;
+        }
+        public static IEnumerable<UserLogin> ReadExcell( )
+        {
+            Workbook workbook = new Workbook("C:\\Users\\Administrator\\source\\repos\\Test\\Test\\Data\\Data.xlsx");
+            Worksheet worksheet1 = workbook.Worksheets[0];
+            int rowCount = worksheet1.Cells.MaxDataRow;
+            List<UserLogin> userLogins = new List<UserLogin>( );
 
-         };
+            for( int i = 1 ; i < rowCount ; i++ )
+            {
+                userLogins.Add( new UserLogin
+                {
+                    userName = worksheet1.Cells[ i, 0 ].Value?.ToString( ).Trim( ),
+                    password = worksheet1.Cells[ i, 1 ].Value?.ToString( ).Trim( )
+                } );
+            };
+            return userLogins;
+        }
     }
 }

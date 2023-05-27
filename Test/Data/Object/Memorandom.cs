@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.Data
+namespace Test.Data.Object
 {
     public class Memorandom
     {
@@ -16,7 +16,15 @@ namespace Test.Data
         {
             get; set;
         }
+        public string readyText
+        {
+            get; set;
+        }
         public string reciver
+        {
+            get; set;
+        }
+        public string userLoginCheckReciver
         {
             get; set;
         }
@@ -28,11 +36,19 @@ namespace Test.Data
         {
             get; set;
         }
+        public string userLoginCheckTranscript
+        {
+            get; set;
+        }
         public string transcriptReciver2
         {
             get; set;
         }
         public string transcriptOrder2
+        {
+            get; set;
+        }
+        public string userLoginCheckTranscipt2
         {
             get; set;
         }
@@ -64,8 +80,15 @@ namespace Test.Data
         {
             get; set;
         }
-       
         public string userLogin
+        {
+            get; set;
+        }
+        public string transcriptSearchResult2
+        {
+            get; set;
+        }
+        public string transcriptSearchReciver2
         {
             get; set;
         }

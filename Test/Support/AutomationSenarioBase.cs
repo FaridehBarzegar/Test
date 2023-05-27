@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test.Data;
+using Test.Data.Object;
 using Test.Pages;
 
 namespace Test.Support
@@ -22,28 +23,31 @@ namespace Test.Support
             driver.Navigate( ).GoToUrl( BaseCartableData.Url );
             LoginPage loginPage = new LoginPage(driver);
             loginPage.LoginLoadPage( );
-            loginPage.LoginSucceed( LoginData.userLoginAhmadi );
+            UserLogin userLogin = LoginData.GetRandomUsers().First();
+            loginPage.LoginSucceed( userLogin );
             ShellPage shellPage = new ShellPage(driver);
-            shellPage.ShellLoadPage();
+            shellPage.ShellLoadPage( );
             shellPage.OpenOfficeAutomation( );
-            
         }
+
         [TearDown]
         public void CloseDriver( )
         {
             try
             {
-             LogoutPage logoutPage = new LogoutPage(driver);
-             logoutPage.LogoutSucceed( );
-             driver.Close( );
-             driver.Quit( );
-             driver.Dispose( );
+                LogoutPage logoutPage = new LogoutPage( driver );
+                logoutPage.LogoutSucceed( );
+
             }
-            catch
+            catch( Exception ex )
             {
-             driver.Close();
-             driver.Quit( );
-             driver.Dispose( );
+                throw ex;
+            }
+            finally
+            {
+                driver.Close( );
+                driver.Quit( );
+                driver.Dispose( );
             }
         }
     }

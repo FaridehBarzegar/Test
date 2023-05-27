@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Test.Data;
+using Test.Data.Object;
+using Test.Public;
 
 namespace Test.Pages
 {
@@ -25,7 +26,7 @@ namespace Test.Pages
 
         public void LoginLoadPage( )
         {
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 15 );
+            driver.WaitForPageLoad( 5 );
             Assert.AreEqual( true, m_Txtusername.Displayed );
             Assert.AreEqual( true, m_Txtpassword.Displayed );
             Assert.AreEqual( true, m_Btnlogin.Displayed );
@@ -36,7 +37,7 @@ namespace Test.Pages
         }
         public void LoginSucceed( UserLogin userLogin )
         {
-            driver.Manage( ).Timeouts( ).PageLoad = TimeSpan.FromSeconds( 5 );
+            driver.WaitForPageLoad( 5 );
             m_Txtusername.SendKeys( userLogin.userName );
             m_Txtpassword.SendKeys( userLogin.password );
             m_Btnlogin.Click( );

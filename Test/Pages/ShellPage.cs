@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Public;
 
 namespace Test.Pages
 {
@@ -11,15 +12,15 @@ namespace Test.Pages
     public class ShellPage
     {
         private IWebDriver driver;
-        private IWebElement m_BtnOfficeAutomation => driver.FindElement( By.Id( "OfficeAutomation" ) );
-        private IWebElement m_BtnCalender        => driver.FindElement( By.Id( "Calendar" ) );
-        private IWebElement m_BtnPersonelInbox   => driver.FindElement( By.Id( "PersonalInbox" ) );
-        private IWebElement m_BtnPeople          => driver.FindElement( By.Id( "People" ) );
-        private IWebElement m_BtnNote            => driver.FindElement( By.Id( "Note" ) );
-        private IWebElement m_BtnBulletinBoard   => driver.FindElement( By.Id( "BulletinBoard" ) );
-        private IWebElement m_BtnChengePassword  => driver.FindElement( By.LinkText( "تغییر کلمه عبور" ) );
-        private IWebElement m_BtnUserProperties  => driver.FindElement( By.Id( "anchor-userTitle" ) );
-        private IWebElement m_BtnExit            => driver.FindElement( By.XPath( "//a[contains(.,'خروج')]" ) );
+        private IWebElement m_BtnOfficeAutomation => driver.FindElement( By.Id( "OfficeAutomation" ));
+        private IWebElement m_BtnCalender        => driver.FindElement( By.Id( "Calendar" ));
+        private IWebElement m_BtnPersonelInbox   => driver.FindElement( By.Id( "PersonalInbox" ));
+        private IWebElement m_BtnPeople          => driver.FindElement( By.Id( "People" ));
+        private IWebElement m_BtnNote            => driver.FindElement( By.Id( "Note" ));
+        private IWebElement m_BtnBulletinBoard   => driver.FindElement( By.Id( "BulletinBoard" ));
+        private IWebElement m_BtnChengePassword  => driver.FindElement( By.LinkText( "تغییر کلمه عبور" ));
+        private IWebElement m_BtnUserProperties  => driver.FindElement( By.Id( "anchor-userTitle" ));
+        private IWebElement m_BtnExit            => driver.FindElement( By.XPath( "//a[contains(.,'خروج')]" ));
         public ShellPage( IWebDriver driver )
         {
             this.driver = driver;
@@ -27,7 +28,7 @@ namespace Test.Pages
         
         public void ShellLoadPage( )
         {
-            driver.Manage( ).Timeouts( ).ImplicitWait = TimeSpan.FromSeconds( 5 );
+            driver.ImplicitWaitFor( 5 );
             Assert.AreEqual( true, m_BtnOfficeAutomation.Displayed );
             Assert.AreEqual( true, m_BtnCalender.Displayed );
             Assert.AreEqual( true, m_BtnPersonelInbox.Displayed );
@@ -41,7 +42,7 @@ namespace Test.Pages
         public void OpenOfficeAutomation( )
         {
             m_BtnOfficeAutomation.Click( );
-            driver.Manage( ).Timeouts( ).ImplicitWait = TimeSpan.FromSeconds( 5 );
+            driver.ImplicitWaitFor( 5 );
         } 
     }
 }

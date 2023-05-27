@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.Data
+namespace Test.Data.Object
 {
-    public  class UserLogin
+    public class UserLogin
     {
         public string userName
         {
@@ -17,4 +17,4 @@ namespace Test.Data
             get; set;
         }
     }
-  }
+}
