@@ -1,18 +1,15 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools.V109.Network;
+﻿using OpenDialogWindowHandler;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using System.Collections.ObjectModel;
+using System.Threading;
 using Test.Data;
-using Test.Data.Object;
+using Test.Data.Objects;
 using Test.Public;
+
+
 
 
 namespace Test.Pages
@@ -21,7 +18,8 @@ namespace Test.Pages
     {
         private IWebDriver driver;
         private  WebDriverWait webDriverWait;
-        private IWebElement m_ObjTo => driver.FindElement( By.Id( "To_text" ) );
+        private IWebElement m_ObjTo => driver.FindElement( By.XPath( "//div[@class='items-container']//*[@id='To_text']" ));
+        private IWebElement m_ObjToselect => driver.FindElement( By.CssSelector( "#To_objectPicker .items-container" ));
         private IWebElement m_ObjTranscriptItems0TranscriptToAsPosition => driver.FindElement( By.Id( "TranscriptItems_0_TranscriptToAsPosition_text" ) );
         private IWebElement m_ObjTranscriptItems1TranscriptToAsPosition => driver.FindElement( By.Id( "TranscriptItems_1_TranscriptToAsPosition_text" ) );
         private IWebElement m_TxtTranscriptItems0TranscriptReason => driver.FindElement( By.Id( "TranscriptItems_0__TranscriptReason" ) );
@@ -34,63 +32,146 @@ namespace Test.Pages
         private IWebElement m_CkEditor => driver.FindElement( By.Id( "cke_1_top" ) );
         private IWebElement m_ContentMemorandom => driver.FindElement( By.CssSelector( "#cke_1_contents > iframe" ) );
         // private IWebElement m_ContentMemorandomToolbar => driver.FindElement( By.CssSelector( "#cke_1_top > iframe" ) );
-
-        private void SelectReciver( Memorandom memorandom )
+        #region SelectMemorandomProperties
+        private void SelectReciver( ObjectPiker reciver )
         {
-            m_ObjTo.Click( );
-            m_ObjTo.SendKeys( memorandom.searchReciver );
-            string[] searchResult = memorandom.searchReciverResult.Split("،" );
+            try
+                {
+            driver.ImplicitWaitFor( 3);
+             driver.FindElement( By.CssSelector( "#To_objectPicker .items-container" )).Click( );
+           // m_ObjToselect.Click( );
+            driver.ImplicitWaitFor( 3);
+            m_ObjTo.SendKeys( reciver.searchReciver );
+            string[] searchResult = reciver.searchReciverResult.Split("،" );
             foreach( string searchItem in searchResult )
                 WaitManagement.WaitForLoadAnElementByXPath( driver, 5, $"//li[. = '{searchItem}']" );
-            driver.FindElement( By.XPath( $"//li[ .= '{memorandom.reciver}']" ) ).Click( );
-        }
-
-        private void SelectTranscript( Memorandom memorandom )
-        {
-            if( !string.IsNullOrEmpty( memorandom.transcriptReciver ) )
+            driver.FindElement( By.XPath( $"//li[ .= '{reciver.reciver}']" ) ).Click( );
+            }
+            catch(Exception exp )
             {
-                string[] searchtranscriptResult = memorandom.transcriptSearchResult.Split("،" );
-                m_ObjTranscriptItems0TranscriptToAsPosition.Click( );
-                m_ObjTranscriptItems0TranscriptToAsPosition.SendKeys( memorandom.transcriptSearchReciver );
-                foreach( string searchItem in searchtranscriptResult )
-                    WaitManagement.WaitForLoadAnElementByXPath( driver, 5, $"//li[. = '{searchItem}']" );
-                driver.FindElement( By.XPath( $"//li[. = '{memorandom.transcriptReciver}']" ) ).Click( );
-                m_TxtTranscriptItems0TranscriptReason.SendKeys( memorandom.transcriptOrder );
+                throw;
+
             }
         }
-        private void SelectTranscript2( Memorandom memorandom )
+
+        private void SelectTranscript( ObjectPiker reciver )
         {
-            if( !string.IsNullOrEmpty( memorandom.transcriptReciver2 ) )
-            {
-                string[] searchtranscriptResult = memorandom.transcriptSearchResult2.Split("،" );
+                string[] searchtranscriptResult = reciver.transcriptSearchResult.Split("،" );
+                m_ObjTranscriptItems0TranscriptToAsPosition.Click( );
+                m_ObjTranscriptItems0TranscriptToAsPosition.SendKeys( reciver.transcriptSearchReciver );
+                foreach( string searchItem in searchtranscriptResult )
+                    WaitManagement.WaitForLoadAnElementByXPath( driver, 5, $"//li[. = '{searchItem}']" );
+                driver.FindElement( By.XPath( $"//li[. = '{reciver.transcriptReciver}']" ) ).Click( );
+                m_TxtTranscriptItems0TranscriptReason.SendKeys( reciver.transcriptOrder );
+            
+        }
+
+         private void SelectTranscriptWithReferralOrder( ObjectPiker reciver , string referralCommand )
+        {
+                string[] searchtranscriptResult = reciver.transcriptSearchResult.Split("،" );
+                m_ObjTranscriptItems0TranscriptToAsPosition.Click( );
+                m_ObjTranscriptItems0TranscriptToAsPosition.SendKeys( reciver.transcriptSearchReciver );
+                foreach( string searchItem in searchtranscriptResult )
+                    WaitManagement.WaitForLoadAnElementByXPath( driver, 5, $"//li[. = '{searchItem}']");
+                driver.FindElement( By.XPath( $"//li[. = '{reciver.transcriptReciver}']" ) ).Click( );
+                new Actions( driver ).DoubleClick( driver.FindElement( By.XPath( "//input[@id='TranscriptItems_0__TranscriptReason']" ))).Build( ).Perform( );
+                driver.ImplicitWaitFor( 3 );
+                driver.FindElement ( By.XPath($"//a[text(),'{referralCommand}']")).Click( );
+            
+        }
+
+        private void SelectTranscript2( ObjectPiker  reiver )
+        {
+                string[] searchtranscriptResult = reiver.searchResultTranscriptReciver2.Split("،" );
                 driver.FindElement( By.Id( "add" ) ).Click( );
                 m_ObjTranscriptItems1TranscriptToAsPosition.Click( );
-                m_ObjTranscriptItems1TranscriptToAsPosition.SendKeys( memorandom.transcriptSearchReciver2 );
-                // webDriverWait = new WebDriverWait( driver, TimeSpan.FromSeconds( 5 ) );
+                m_ObjTranscriptItems1TranscriptToAsPosition.SendKeys( reiver.searchTranscriptReciver2 );
                 foreach( string searchItem in searchtranscriptResult )
                     WaitManagement.WaitForLoadAnElementByXPath( driver, 5, $"//li[. = '{searchItem}']" );
-                driver.FindElement( By.XPath( $"//li[. = '{memorandom.transcriptReciver2}']" ) ).Click( );
-                m_TxtTranscriptItems1TranscriptReason1.SendKeys( memorandom.transcriptOrder2 );
-            }
+                driver.FindElement( By.XPath( $"//li[. = '{reiver.transcriptReciver2}']" ) ).Click( );
+                m_TxtTranscriptItems1TranscriptReason1.SendKeys( reiver.transcriptOrder2 );
         }
 
-        private void SelectTranscriptReciverFromChart( Memorandom memorandom )
+        private void SelectReciverFromChart( ObjectPiker reciver )
         {
-            m_ObjTranscriptItems0TranscriptToAsPosition.Click( );
+            string[] searchresult = reciver.searchResultReciverFromChart.Split("،");
+            
             driver.FindElement( By.XPath("//div[@class='custom-selector-icon']")).Click( );
             driver.ImplicitWaitFor( 3 );
             driver.FindElement( By.XPath("//div[@class='custom-selector-closer shown']"));
             driver.FindElement( By.XPath("//div[@id='To_customSelectorContainer']"));
-            driver.FindElement( By.XPath("//div[@class='header selected']")).Click( );
-            driver.FindElement( By.Id("To_customSelectorContainer_Search")).SendKeys(memorandom.transcriptSearchReciver);
+            driver.FindElement( By.XPath("//div[contains(text(),'نمایش چارت')]")).Click( );
+            driver.FindElement( By.Id("To_customSelectorContainer_Search")).SendKeys(reciver.searchReciverFromChart );
+            foreach( string searchItem in searchresult )
+            {
+                IJavaScriptExecutor javaScriptc=(IJavaScriptExecutor) driver; 
+                 IWebElement element1= WaitManagement.WaitForLoadAnElementByXPath( driver, 5, $"//a[@class='jstree-anchor jstree-search'][contains(text(),'{searchItem}')]" );
+                 javaScriptc.ExecuteScript("arguments[0].scrollIntoView();", element1);
+            }
             IJavaScriptExecutor javaScript=(IJavaScriptExecutor) driver;
-            Actions actions = new Actions(driver);
-            IWebElement element = driver.FindElement( By.XPath($"//a[contains(text(),'{memorandom.transcriptSearchReciver}')]"));
-               javaScript.ExecuteScript("arguments[0].scrollIntoView(true);", element);
-            driver.ImplicitWaitFor(10);
-            driver.FindElement( By.XPath($"//a[contains(text(),'{memorandom.transcriptSearchReciver}')]//i[@class='jstree-icon jstree-checkbox']")).Click();
-            //actions.MoveToElement(element);
-            //actions.Perform();
+            IWebElement element = driver.FindElement( By.XPath($"//a[contains(text(),'{reciver.reciverFromChart}')]"));
+            javaScript.ExecuteScript("arguments[0].scrollIntoView();", element);
+            driver.ImplicitWaitFor(2);
+            driver.FindElement( By.XPath($"//a[contains(text(),'{reciver.reciverFromChart}')]//i[@class='jstree-icon jstree-checkbox']")).Click();
+            driver.FindElement(By.Id("To_objectPicker")).Click( );
+        }
+
+         private void SelectReciverFromPersonelList( ObjectPiker reciver )
+        {
+            driver.FindElement( By.XPath("//div[@class='custom-selector-icon']")).Click( );
+            driver.ImplicitWaitFor( 3 );
+            driver.FindElement( By.XPath("//div[@class='custom-selector-closer shown']"));
+            driver.FindElement( By.XPath("//div[@id='To_customSelectorContainer']"));
+            driver.FindElement( By.XPath("//div[@class='header selected'][contains(text(),'لیست شخصی')]")).Click( );
+            driver.FindElement( By.XPath("//div[@class='favorite-list']")).Click( );
+            ReadOnlyCollection<IWebElement> elements = driver.FindElements(By.XPath("//div[@id='To_customSelectorContainer']//div[@class='favoriteItem table fixed']"));
+            string [] PersonelListItem = reciver.searchResultReciverFromPersonelList.Split( "،" );
+            foreach(string searchItem in PersonelListItem )
+            {
+                driver.FindElement( By.XPath( $"//div[@id='To_customSelectorContainer']//a[text()='{searchItem}']"));
+            }
+            driver.FindElement( By.XPath($"//div[@text='{reciver.reciverFromPersonelList}']")).Click( );
+            driver.FindElement(By.Id("To_objectPicker")).Click( );
+        }
+
+         private void SelectTranscriptReciverFromChart( ObjectPiker reciver )
+        {
+            string[] searchresult = reciver.searchResultTranscriptReciverFromChart.Split("،");
+            driver.FindElement( By.XPath("//div[@id='TranscriptItems_0_TranscriptToAsPosition_objectPicker']//div[@class='custom-selector-icon']")).Click( );
+            driver.ImplicitWaitFor( 3 );
+            driver.FindElement( By.XPath("//div[@class='custom-selector-closer shown']"));
+            driver.FindElement( By.XPath("//div[@id='TranscriptItems_0_TranscriptToAsPosition_customSelectorContainer']//div[contains(text(),'نمایش چارت')]")).Click( );
+            driver.FindElement( By.Id("TranscriptItems_0_TranscriptToAsPosition_customSelectorContainer_Search")).SendKeys(reciver.searchTranscriptReciverFromChart );
+            foreach( string searchItem in searchresult )
+            {
+                IJavaScriptExecutor javaScriptc=(IJavaScriptExecutor) driver; 
+                 IWebElement element1= WaitManagement.WaitForLoadAnElementByXPath( driver, 5, $"//a[@class='jstree-anchor jstree-search'][contains(text(),'{searchItem}')]" );
+                 javaScriptc.ExecuteScript("arguments[0].scrollIntoView();", element1);
+            }
+            IJavaScriptExecutor javaScript=(IJavaScriptExecutor) driver;
+            IWebElement element = driver.FindElement( By.XPath($"//a[contains(text(),'{reciver.transcriptReciverFromChart}')]"));
+            javaScript.ExecuteScript("arguments[0].scrollIntoView();", element);
+            driver.ImplicitWaitFor(2);
+            driver.FindElement( By.XPath($"//a[@class='jstree-anchor jstree-search'][contains(text(),'{reciver.transcriptReciverFromChart}')]")).Click();
+             driver.FindElement( By.XPath("//div[@id='TranscriptItems_0_TranscriptToAsPosition_objectPicker']")).Click( );
+            //driver.FindElement( By.Id("TranscriptItems_0_TranscriptToAsPosition_objectPicker")).Click( );
+            //IWebElement closeCustomer = driver.FindElement( By.XPath("//[@class='custom-selector-closer']"));
+            //Assert.AreEqual(true , closeCustomer.Displayed);
+        }
+
+         private void SelectTranscriptReciverFromPersonelList(ObjectPiker reciver )
+        {
+            string[] searchresult = reciver.searchResultTranscriptReciverFromPersonelList.Split("،");
+            ReadOnlyCollection<IWebElement> reciversSelected = driver.FindElements( By.XPath("//div[@id='To_objectPicker']//span[@class='item']"));
+            driver.FindElement( By.XPath("//div[@id='TranscriptItems_0_TranscriptToAsPosition_objectPicker']//div[@class='custom-selector-icon']")).Click( );
+            driver.ImplicitWaitFor( 3 );
+            driver.FindElement( By.XPath("//div[@class='custom-selector-closer shown']"));
+            driver.FindElement( By.XPath("//div[@id='TranscriptItems_0_TranscriptToAsPosition_customSelectorContainer']//div[contains(text(),'لیست شخصی')]")).Click( );
+            ReadOnlyCollection<IWebElement> elements = driver.FindElements( By.XPath("//div[@id='TranscriptItems_0_TranscriptToAsPosition_customSelectorContainer']//div[@class='favoriteItem table fixed']"));
+            foreach( string searchItem in searchresult )
+                driver.FindElement( By.XPath( $"//div[@id='TranscriptItems_0_TranscriptToAsPosition_customSelectorContainer']//a[text()='{searchItem}']"));
+            driver.FindElement( By.XPath($"//div[@id='TranscriptItems_0_TranscriptToAsPosition_customSelectorContainer']//a[text()='{reciver.transcriptReciverFromPersonelList}']")).Click( );
+            driver.FindElement( By.XPath("//div[@id='TranscriptItems_0_TranscriptToAsPosition_objectPicker']")).Click( );
 
         }
 
@@ -115,35 +196,44 @@ namespace Test.Pages
 
         private void SetDiscription( Memorandom memorandom )
         {
-                  driver.SwitchTo( ).Frame( m_ContentMemorandom );
-                    IWebElement body = driver.FindElement(By.TagName("body"));
-                    body.SendKeys( memorandom.discreption );
-                    driver.SwitchTo( ).ParentFrame( );
-
-            //try
-            //{
-            //    if( !string.IsNullOrEmpty( memorandom.readyText ) )
-
-            //    {
-            //        Actions action  = new Actions(driver);
-            //        action.MoveToElement( driver.FindElement( By.XPath( "//span[@class='cke_button_icon cke_button__readytexts_icon']" ) ) ).Click().Build().Perform( );
-            //        driver.FindElement( By.XPath( "//span[@class='cke_button_icon cke_button__readytexts_icon']" ) ).Click( );
-            //        driver.ImplicitWaitFor( 7);
-            //        driver.FindElement( By.XPath( $"//li[.='{memorandom.readyText}']" ) ).Click( );
-            //        driver.ImplicitWaitFor(10);
-            //    }
-            //    else
-            //    {
-               // }
-                    //driver.ImplicitWaitFor(7);
-            //}
-            //catch( Exception ex )
-            //{
-
-            //    throw;
-            //}
+            driver.SwitchTo( ).Frame( m_ContentMemorandom );
+            IWebElement body = driver.FindElement(By.TagName("body"));
+            if( string.IsNullOrEmpty(body.Text ) )
+            {
+                 body.SendKeys( memorandom.discreption );
+                 
+                 Assert.AreEqual(true,body.Displayed);
+            }
+            driver.SwitchTo( ).ParentFrame( );
+        }
+        private void SetMemorandomDiscriptionWithPrepareContent( ReadyText readyText )
+        {
+            Actions action  = new Actions(driver);
+            driver.FindElement( By.XPath( "//span[@class='cke_button_icon cke_button__readytexts_icon']" )).Click( );
+            driver.FindElement( By.XPath( "//span[@class='cke_button_icon cke_button__readytexts_icon']" )).Click( );
+            driver.ImplicitWaitFor( 1 );
+            driver.FindElement( By.XPath( $"//li[.='{readyText.readyTextTitle}']" )).Click( );
+            IWebElement pop= driver.FindElement( By.CssSelector("#popup-container-closer"));
+            pop.Click();
+            driver.SwitchTo( ).Frame( m_ContentMemorandom );
+            IWebElement body = driver.FindElement(By.TagName("body"));
+            Assert.AreEqual( readyText.readyTextDiscription,body.Text );
+            driver.SwitchTo( ).ParentFrame( );
         }
 
+        private void SelectMemorandomAttachment( string fileName )
+        {
+            IWebElement fileUploadContent = driver.FindElement( By.Id( "3fa525f9-4419-47bd-8bc2-f8c4166450b7" ));
+            fileUploadContent.Click();
+            driver.ImplicitWaitFor( 2 );
+            HandleOpenDialog hndOpen = new HandleOpenDialog();  
+            hndOpen.fileOpenDialog(@"E:\FileUpload\MemorandomAttachment", fileName); 
+            IWebElement attachmentsUploaded = driver.WaitForLoadAnElementByXPath( 3 , "//div[@class='attachment-containter']");
+            Assert.That( attachmentsUploaded.Displayed ,Is.EqualTo( true ));
+        }
+        #endregion
+
+        #region MemorandomMethod
         private void SaveCreatedMemorandom( )
         {
             driver.FindElement( By.Id( "f8f76661-500a-4ed5-bcd4-bd1db55c96bf-label" ) ).Click( );
@@ -155,8 +245,51 @@ namespace Test.Pages
             driver.FindElement( By.Id( "7f4bc636-4abb-41f1-82f9-d0ed7c036819" ) ).Click( );
             driver.ImplicitWaitFor( 60 );
         }
+        
+        private void MemorandomPrepare (Memorandom memorandom , ObjectPiker reciver )
+        {
+            SetDiscription( memorandom );
+            SetTitle( memorandom.memorandomTitle );
+            SelectReciver( reciver );
+        }
 
-        private void CheckMemorandomIsSavedInDraft( Memorandom memorandom, string persianFromDate )
+        #endregion
+
+        private void LogoutUser( )
+        {
+            LogoutPage logoutPage = new LogoutPage(driver);
+            logoutPage.LogoutSucceed( );
+        }
+        private void LoginUser( string userLogin )
+        {
+            UserLogin user = LoginData.FindUserByUserName(userLogin);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.LoginSucceed( user );
+        }
+
+        #region CheckMemorandomAction
+        private void CheckImportance( string priority )
+        {
+            if( !string.IsNullOrEmpty( priority ) )
+                Assert.AreEqual( true, driver.FindElement( By.XPath( "//tr[2]//span[@class='wil-icon itemFlag']" ) ).Displayed );
+        }
+
+        private void CheckMemorandomIsRecived( Memorandom memorandom, string persianFromDate, CartablePage cartablePage )
+        {
+            ShellPage shellPage = new ShellPage(driver);
+            shellPage.ShellLoadPage( );
+            shellPage.OpenOfficeAutomation( );
+            cartablePage.CartableLoaded( );
+            IWebElement recivedMemorandomTitile =
+            driver.FindElement ( By.XPath($"//tr[contains(.,'{memorandom.memorandomTitle}')]"));
+            IWebElement recivedMemorandomDate =
+            driver.FindElement ( By.XPath( $"//*[contains(text() , '{persianFromDate}')]"));
+            Assert.AreEqual( true, recivedMemorandomTitile.Displayed );
+            Assert.AreEqual( true, recivedMemorandomDate.Displayed );
+            CheckImportance( memorandom.priority );
+        }
+       
+         private void CheckMemorandomIsSavedInDraft( Memorandom memorandom, string persianFromDate )
         {
             CartablePage cartablePage = new CartablePage(driver);
             cartablePage.CartableOpenDraft( );
@@ -191,17 +324,28 @@ namespace Test.Pages
             }
         }
 
-        private void CheckMemorandomIsSavedWithTrascript( Memorandom memorandom )
+        private void CheckMemorandomIsSavedWithTrascript( ObjectPiker reciver )
         {
             MemorandomDraftPage memorandomDraftPage= new MemorandomDraftPage( driver );
             memorandomDraftPage.DraftMemorandomEditPageLoad( );
-            IWebElement transcript = driver.FindElement(By.CssSelector($"[title='{memorandom.transcriptReciver}'] > .item-text"));
+            IWebElement transcript = driver.FindElement(By.CssSelector($"[title='{reciver.transcriptReciver}'] > .item-text"));
             IWebElement transcriptOrder = driver.FindElement(By.Id("TranscriptItems_0__TranscriptReason"));
             transcriptOrder.GetAttribute("value");
             //question
             Assert.AreEqual(true,transcript.Displayed );
           //  Assert.AreEqual( memorandom.transcriptOrder,transcriptOrder.GetAttribute("value"));
         }
+
+         private void CheckMemorandomIsSavedWithTrascriptReciver2( ObjectPiker reciver )
+        {
+            IWebElement transcriptReciver2 = driver.FindElement(By.CssSelector($"[title='{reciver.transcriptReciver2}'] > .item-text"));
+            IWebElement transcriptOrder2 = driver.FindElement(By.Id("TranscriptItems_1__TranscriptReason"));
+            transcriptOrder2.GetAttribute("value");
+            //question
+            Assert.AreEqual(true,transcriptReciver2.Displayed );
+          //  Assert.AreEqual( memorandom.transcriptOrder,transcriptOrder.GetAttribute("value"));
+        }
+
         private CartablePage CheckMemorandomIsSended( Memorandom memorandom, string persianFromDate )
         {
             CartablePage cartablePage = new CartablePage(driver);
@@ -221,47 +365,14 @@ namespace Test.Pages
             return cartablePage;
         }
 
-        private void LoginUser( string userLogin )
+        private void CheckMemorandomIsSavedWithAttachment( Memorandom memorandom ,ObjectPiker objectPiker )
         {
-            UserLogin user = LoginData.FindUserByUserName(userLogin);
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.LoginSucceed( user );
+            MemorandomDraftPage memorandomDraftPage = new MemorandomDraftPage(driver);
+             memorandomDraftPage.DraftMemorandomShowPageLoad( memorandom , objectPiker );
         }
 
-        private void LogoutUser( )
-        {
-            LogoutPage logoutPage = new LogoutPage(driver);
-            logoutPage.LogoutSucceed( );
-        }
+        #endregion
 
-        private void CheckImportance( string priority )
-        {
-            if( !string.IsNullOrEmpty( priority ) )
-                Assert.AreEqual( true, driver.FindElement( By.XPath( "//tr[2]//span[@class='wil-icon itemFlag']" ) ).Displayed );
-        }
-
-        private void CheckMemorandomIsRecived( Memorandom memorandom, string persianFromDate, CartablePage cartablePage )
-        {
-            ShellPage shellPage = new ShellPage(driver);
-            shellPage.ShellLoadPage( );
-            shellPage.OpenOfficeAutomation( );
-            cartablePage.CartableLoaded( );
-            IWebElement recivedMemorandomTitile =
-            driver.FindElement ( By.XPath($"//tr[contains(.,'{memorandom.memorandomTitle}')]"));
-            IWebElement recivedMemorandomDate =
-            driver.FindElement ( By.XPath( $"//*[contains(text() , '{persianFromDate}')]"));
-            Assert.AreEqual( true, recivedMemorandomTitile.Displayed );
-            Assert.AreEqual( true, recivedMemorandomDate.Displayed );
-            CheckImportance( memorandom.priority );
-        }
-
-        private void MemorandomPrepare (Memorandom memorandom )
-        {
-            driver.ImplicitWaitFor( 5 );
-            SelectReciver( memorandom );
-            SetTitle( memorandom.memorandomTitle );
-            SetDiscription( memorandom );
-        }
         public MemorandomPage( IWebDriver driver )
         {
             this.driver = driver;
@@ -269,7 +380,8 @@ namespace Test.Pages
 
         public void MemorandomCreateLoadPage( )
         {
-            IWebElement m_ObjTo =  WaitManagement.WaitForLoadAnElementById( driver , 5, "To_text" );
+            driver.ImplicitWaitFor( 5 );
+            IWebElement m_ObjTo =  WaitManagement.WaitForLoadAnElementById( driver , 7, "To_text" );
             Assert.AreEqual( true, m_ObjTo.Displayed );
             Assert.AreEqual( true, m_ObjTranscriptItems0TranscriptToAsPosition.Displayed );
             Assert.AreEqual( true, m_TxtTranscriptItems0TranscriptReason.Displayed );
@@ -282,60 +394,86 @@ namespace Test.Pages
             Assert.AreEqual( true, m_ContentMemorandom.Displayed );
         }
         
-        public void MemorandomSave( Memorandom memorandom )
+        public void MemorandomSave( Memorandom memorandom , ObjectPiker reciver )
         {
-            MemorandomPrepare( memorandom );
+            //driver.ImplicitWaitFor( 5 );
+            MemorandomPrepare( memorandom , reciver );
             DateTime fromDateTime = DateTime.Now;
             SaveCreatedMemorandom( );
             string persianFromDate=Utility.ConvertDateToPersianDate(fromDateTime);
             CheckMemorandomIsSavedInDraft( memorandom, persianFromDate );
         }
 
-        public void MemorandomSaveWithImportance( Memorandom memorandom )
+        public void MemorandomSaveWithImportance( Memorandom memorandom , ObjectPiker reciver )
         {
             SetImportance( memorandom.priority);
-            MemorandomSave( memorandom );
+            MemorandomSave( memorandom , reciver );
             CheckMemorandomIsSavedWithImportance( memorandom.priority );
         }
         
-        public void MemorandomSaveWithTranscriptReciver( Memorandom memorandom )
+        public void MemorandomSaveWithTranscriptReciver( Memorandom memorandom , ObjectPiker reciver)
         {
-            SelectTranscript(memorandom);
-            MemorandomSave( memorandom );
-            CheckMemorandomIsSavedWithTrascript( memorandom );
+            SelectTranscript(reciver);
+            MemorandomSave( memorandom , reciver );
+            CheckMemorandomIsSavedWithTrascript( reciver );
         }
 
-         public void MemorandomSaveWithTranscriptReciver2( Memorandom memorandom )
+        public void MemorandomSaveWithTranscriptReciver2( Memorandom memorandom , ObjectPiker reciver )
         {
-            SelectTranscript2(memorandom);
-            MemorandomSaveWithTranscriptReciver( memorandom );
-            CheckMemorandomIsSavedWithTrascript( memorandom );
+            SelectTranscript2(reciver);
+            MemorandomSaveWithTranscriptReciver(  memorandom , reciver );
+            CheckMemorandomIsSavedWithTrascriptReciver2( reciver );
         }
 
-        public void MemorandomSaveSelectTranscriptFromChart( Memorandom memorandom )
+        public void MemorandomSaveSelectReciversFromChartAndPersonalList( Memorandom memorandom, ObjectPiker reciver)
         {
-            SelectTranscriptReciverFromChart( memorandom );
+            SelectReciverFromChart(  reciver );
+            SelectReciverFromPersonelList( reciver );
+            SelectTranscriptReciverFromChart( reciver );
+            SelectTranscriptReciverFromPersonelList( reciver );
+            MemorandomSave( memorandom , reciver );
+       
+        }
+        public void MemorandomSavewithPrepareContent( Memorandom memorandom , ReadyText readyText , ObjectPiker objectPiker )
+        {
+            //driver.ImplicitWaitFor( 7 );
+            SetMemorandomDiscriptionWithPrepareContent( readyText );
+            MemorandomSave( memorandom , objectPiker );
+        }
+        
+        public void MemorandomSaveWithTranscriptOrderFromReferralCommand( Memorandom memorandom , ObjectPiker objectPiker , string referralCommand )
+        {
+            //driver.ImplicitWaitFor( 7 );
+            SelectTranscriptWithReferralOrder( objectPiker , referralCommand );
+            MemorandomSave( memorandom , objectPiker );
         }
 
-        public void MemorandomSend( Memorandom memorandom )
+        public void MemorandomSaveSelectMemorandomAttachment( Memorandom memorandom, ObjectPiker objectPiker )
         {
-            MemorandomPrepare( memorandom );
+            driver.ImplicitWaitFor(5);
+            SelectMemorandomAttachment( memorandom.fileAttachmentName );
+            MemorandomSave( memorandom, objectPiker );
+            CheckMemorandomIsSavedWithAttachment( memorandom , objectPiker );
+        }
+
+        public void MemorandomSend( Memorandom memorandom , ObjectPiker reciver )
+        {
+            MemorandomPrepare( memorandom , reciver );
             DateTime fromDateTime = DateTime.Now;
             SendCreateMemorandom( );
-
             string persianFromDate=Utility.ConvertDateToPersianDate(fromDateTime);
             CartablePage cartablePage = CheckMemorandomIsSended( memorandom, persianFromDate );
             LogoutUser( );
-            LoginUser( memorandom.userLogin );
+            //LoginUser( memorandom.userLogin );
             CheckMemorandomIsRecived( memorandom, persianFromDate, cartablePage );
         }
 
-        public void SaveAndSendNewMemorandom( Memorandom memorandom )
+        public void SaveAndSendNewMemorandom( Memorandom memorandom , ObjectPiker reciver)
         {
             driver.ImplicitWaitFor( 5 );
-            SelectReciver( memorandom );
-            SelectTranscript( memorandom );
-            SelectTranscript2( memorandom );
+            SelectReciver( reciver );
+            SelectTranscript( reciver );
+            SelectTranscript2( reciver );
             SetImportance( memorandom.priority );
             SetTitle( memorandom.memorandomTitle );
             SetDiscription( memorandom );
@@ -347,7 +485,7 @@ namespace Test.Pages
             string persianFromDate=Utility.ConvertDateToPersianDate(fromDateTime);
             CartablePage cartablePage = CheckMemorandomIsSended( memorandom, persianFromDate );
             LogoutUser( );
-            LoginUser( memorandom.userLogin );
+            //LoginUser( memorandom.userLogin );
             CheckMemorandomIsRecived( memorandom, persianFromDate, cartablePage );
         }
 

@@ -9,7 +9,7 @@ using System.Reflection.Metadata;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
-using Test.Data.Object;
+using Test.Data.Objects;
 
 namespace Test.Data
 {

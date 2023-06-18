@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test.Data;
-using Test.Data.Object;
+using Test.Data.Objects;
 using Test.Pages;
 using Test.Support;
+using System.Runtime.InteropServices;
 
 namespace Test.Senario
 {
@@ -36,7 +37,7 @@ namespace Test.Senario
             CartablePage cartablePage;
             MemorandomPage memorandomPage;
             OpenNewMemorandomPage( out cartablePage, out memorandomPage );
-            memorandomPage.MemorandomSave( memorandom );
+            memorandomPage.MemorandomSave( memorandom , objectPiker );
             cartablePage.CartableBackToShell( );
         }
 
@@ -46,7 +47,7 @@ namespace Test.Senario
             CartablePage cartablePage;
             MemorandomPage memorandomPage;
             OpenNewMemorandomPage( out cartablePage, out memorandomPage );
-            memorandomPage.MemorandomSaveWithImportance( memorandom );
+            memorandomPage.MemorandomSaveWithImportance( memorandom , objectPiker );
             cartablePage.CartableBackToShell( );
         }
 
@@ -56,7 +57,7 @@ namespace Test.Senario
             CartablePage cartablePage;
             MemorandomPage memorandomPage;
             OpenNewMemorandomPage( out cartablePage, out memorandomPage );
-            memorandomPage.MemorandomSaveWithTranscriptReciver( memorandom );
+            memorandomPage.MemorandomSaveWithTranscriptReciver( memorandom , objectPiker );
             cartablePage.CartableBackToShell( );
         } 
         [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.S_MemorandomData))]
@@ -65,37 +66,72 @@ namespace Test.Senario
             CartablePage cartablePage;
             MemorandomPage memorandomPage;
             OpenNewMemorandomPage( out cartablePage, out memorandomPage );
-            memorandomPage.MemorandomSaveWithTranscriptReciver2( memorandom );
+            //ObjectPiker reciver = ObjectPikerData.GetRandomRecivers().First();
+            memorandomPage.MemorandomSaveWithTranscriptReciver2( memorandom , objectPiker );
             cartablePage.CartableBackToShell( );
         } 
 
         [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.S_MemorandomData))]
-        public void MemorandomSaveSelectTranscriptFromChart( Memorandom memorandom )
+        public void MemorandomSaveSelectReciversFromChartAndPersonalList( Memorandom memorandom )
         {
             CartablePage cartablePage;
             MemorandomPage memorandomPage;
             OpenNewMemorandomPage( out cartablePage, out memorandomPage );
-            memorandomPage.MemorandomSaveSelectTranscriptFromChart( memorandom );
+            memorandomPage.MemorandomSaveSelectReciversFromChartAndPersonalList( memorandom , objectPiker );
             cartablePage.CartableBackToShell( );
-        } 
+        }
 
         [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.S_MemorandomData))]
+        public void MemorandomSaveWithPrepareContent( Memorandom memorandom  )
+        {
+            CartablePage cartablePage;
+            MemorandomPage memorandomPage;
+            OpenNewMemorandomPage( out cartablePage, out memorandomPage );
+            ReadyText readyText= ReadyTextData.FindReadyTextByUserName(  objectPiker.userLogin );
+            memorandomPage. MemorandomSavewithPrepareContent( memorandom, readyText , objectPiker );
+            cartablePage.CartableBackToShell( );
+        }
+
+        [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.S_MemorandomData))]
+        public void MemorandomSaveWithTranscriptOrderFromReferralCommand( Memorandom memorandom  )
+        {
+            CartablePage cartablePage;
+            MemorandomPage memorandomPage;
+            OpenNewMemorandomPage( out cartablePage, out memorandomPage );
+            string referralCommnd = UserSettingData.FindRandomReferralCommandByUserName( objectPiker.userLogin );
+            memorandomPage.MemorandomSaveWithTranscriptOrderFromReferralCommand( memorandom, objectPiker , referralCommnd );
+            cartablePage.CartableBackToShell( );
+        }
+
+        [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.S_MemorandomData))]
+        public void MemorandomSaveSelectMemorandomAttachment( Memorandom memorandom  )
+        {
+            CartablePage cartablePage;
+            MemorandomPage memorandomPage;
+            OpenNewMemorandomPage( out cartablePage, out memorandomPage );
+            memorandomPage. MemorandomSaveSelectMemorandomAttachment( memorandom , objectPiker );
+            cartablePage.CartableBackToShell( );
+        }
+
+         [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.S_MemorandomData))]
         public void MemorandomSend(Memorandom memorandom )
         {
             CartablePage cartablePage;
             MemorandomPage memorandomPage;
             OpenNewMemorandomPage( out cartablePage, out memorandomPage );
-            memorandomPage.MemorandomSend(memorandom);
+            ObjectPiker reciver = ObjectPikerData.GetRandomRecivers( ).First();
+            memorandomPage.MemorandomSend(memorandom , reciver);
             cartablePage.CartableBackToShell( );
         }
 
-        [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.ReadMemorandomFromExcell))]
+        [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.S_MemorandomData))]
         public void MemorandomSaveAndSend(Memorandom memorandom )
         {
             CartablePage cartablePage;
             MemorandomPage memorandomPage;
             OpenNewMemorandomPage( out cartablePage, out memorandomPage );
-            memorandomPage.SaveAndSendNewMemorandom( memorandom);
+            ObjectPiker reciver = ObjectPikerData.GetRandomRecivers().First();
+            memorandomPage.SaveAndSendNewMemorandom( memorandom , reciver);
             cartablePage.CartableBackToShell( );
         }
        

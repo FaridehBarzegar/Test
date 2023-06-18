@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Data.Objects;
 using Test.Pages;
 using Test.Support;
 
@@ -11,6 +12,7 @@ namespace Test.Senario
 {
     public class CartableSenario: AutomationSenarioBase
     {
+        
         [Test]
         public void CartableLoad( )
         {

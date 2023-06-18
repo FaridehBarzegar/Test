@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Data.Objects;
 using Test.Public;
 
 namespace Test.Pages
@@ -59,11 +60,29 @@ namespace Test.Pages
             Assert.AreEqual(true,m_CkEditor.Displayed);
             
         }
-         public void MemorandomDraftSend( )
+
+        public void DraftMemorandomShowPageLoad( Memorandom memorandom , ObjectPiker objectPiker )
         {
-            driver.FindElement( By.Id( "7f4bc636-4abb-41f1-82f9-d0ed7c036819" )).Click();
-            driver.ImplicitWaitFor( 5 );
-            driver.FindElement(By.Id("1")).Click();
+           driver.FindElement(By.Id( "1" )).Click();
+           driver.ImplicitWaitFor( 5 );
+           driver.FindElement( By.Id( "6b343511-b47a-4469-9a4c-778c91d7a5b0-label " )).Click( );
+           driver.ImplicitWaitFor( 5 );
+           IWebElement memorandomTitle       = driver.FindElement(By.XPath($"//span[contains(@class,'title-text')]  [contains(text(),'{memorandom.memorandomTitle}')]"));
+           IWebElement memmorandomReciver    = driver.FindElement(By.XPath($"//span[contains(text(),'{objectPiker.reciver}')]"));
+           IWebElement memorandomAttahment   = driver.FindElement(By.XPath($"//a[contains(text(),'{memorandom.fileAttachmentName}')]"));
+           IWebElement memorandomDiscreption = driver.FindElement(By.XPath($"//span[contains(text(),'{memorandom.discreption}')]"));
+           Assert.That( memorandomTitle.Displayed ,Is.EqualTo( true ));
+           Assert.That( memmorandomReciver.Displayed ,Is.EqualTo( true ));
+           Assert.That( memorandomAttahment.Displayed ,Is.EqualTo( true ));
+           Assert.That( memorandomDiscreption.Displayed ,Is.EqualTo( true ));
+
+           
+        }
+         public void SendMemorandomInDraft( )
+        {
+           driver.FindElement( By.Id( "7f4bc636-4abb-41f1-82f9-d0ed7c036819" )).Click();
+           driver.ImplicitWaitFor( 5 );
+           driver.FindElement(By.Id("1")).Click();
            driver.ImplicitWaitFor( 5 );
            
         }

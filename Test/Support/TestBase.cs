@@ -16,7 +16,7 @@ namespace Test.Support
         [SetUp]
         public void Setup( )
         {
-            driver = new ChromeDriver( );
+            driver = new ChromeDriver(  @"C:\Users\Administrator\source\repos\Test" );
             driver.Manage( ).Window.Maximize( );
             driver.Navigate( ).GoToUrl( "http://localhost:8084/" );
         }

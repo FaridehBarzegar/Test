@@ -1,12 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Test.Data;
-using Test.Data.Object;
+using Test.Data.Objects;
 using Test.Pages;
 
 namespace Test.Support
@@ -14,16 +9,17 @@ namespace Test.Support
     public class AutomationSenarioBase
     {
         public IWebDriver  driver;
-
+        public ObjectPiker objectPiker = new ObjectPiker( );
         [SetUp]
         public void Setup( )
         {
-            driver = new ChromeDriver( );
+            driver = new ChromeDriver( @"C:\Users\Administrator\source\repos\Test");
             driver.Manage( ).Window.Maximize( );
             driver.Navigate( ).GoToUrl( BaseCartableData.Url );
             LoginPage loginPage = new LoginPage(driver);
             loginPage.LoginLoadPage( );
-            UserLogin userLogin = LoginData.GetRandomUsers().First();
+            objectPiker = ObjectPikerData.GetRandomRecivers( ).First( );
+            UserLogin userLogin =LoginData.FindUserByUserName( objectPiker.userLogin);
             loginPage.LoginSucceed( userLogin );
             ShellPage shellPage = new ShellPage(driver);
             shellPage.ShellLoadPage( );

@@ -1,5 +1,5 @@
 ﻿using Aspose.Cells;
-using  Test.Data.Object;
+using  Test.Data.Objects;
 
 namespace Test.Data
 {
@@ -10,7 +10,7 @@ namespace Test.Data
         {
             get
             {
-                if( !s_memorandomData.Any( ) )
+                if( !s_memorandomData.Any( ))
                 {
                     s_memorandomData = ReadMemorandomFromExcell();
                     s_memorandomData = GetRandomMemorandoms( );
@@ -45,25 +45,10 @@ namespace Test.Data
                 {
                          memorandomTitle          =  worksheet.Cells[ i, 0 ].Value?.ToString( ).Trim( ),
                          discreption              =  worksheet.Cells[ i, 1 ].Value?.ToString( ).Trim( ),
-                         readyText                =  worksheet.Cells[ i, 2 ].Value?.ToString( ).Trim( ),
-                         reciver                  =  worksheet.Cells[ i, 3 ].Value?.ToString( ).Trim( ),
-                         userLoginCheckReciver    =  worksheet.Cells[ i, 4 ].Value?.ToString( ).Trim( ),
-                         transcriptReciver        =  worksheet.Cells[ i, 5 ].Value?.ToString( ).Trim( ),
-                         transcriptOrder          =  worksheet.Cells[ i, 6 ].Value?.ToString( ).Trim( ),
-                         userLoginCheckTranscript =  worksheet.Cells[ i, 7 ].Value?.ToString( ).Trim( ),
-                         transcriptReciver2       =  worksheet.Cells[ i, 8 ].Value?.ToString( ).Trim( ),
-                         transcriptOrder2         =  worksheet.Cells[ i, 9 ].Value?.ToString( ).Trim( ),
-                         userLoginCheckTranscipt2 =  worksheet.Cells[ i, 10 ].Value?.ToString( ).Trim( ),
-                         semilarMemorandom        =  worksheet.Cells[ i, 11 ].Value?.ToString( ).Trim( ),
-                         followUpCompanion        =  worksheet.Cells[ i, 12 ].Value?.ToString( ).Trim( ),
-                         priority                 =  worksheet.Cells[ i, 13 ].Value?.ToString( ).Trim( ),
-                         searchReciver            =  worksheet.Cells[ i, 14].Value?.ToString( ).Trim( ),
-                         searchReciverResult      =  worksheet.Cells[ i, 15].Value?.ToString( ).Trim( ),
-                         transcriptSearchReciver  =  worksheet.Cells[ i, 16].Value?.ToString( ).Trim( ),
-                         transcriptSearchResult   =  worksheet.Cells[ i, 17].Value?.ToString( ).Trim( ),
-                         transcriptSearchReciver2 =  worksheet.Cells[ i, 18].Value?.ToString( ).Trim( ),
-                         transcriptSearchResult2  =  worksheet.Cells[ i, 19].Value?.ToString( ).Trim( ),
-                         userLogin                =  worksheet.Cells[ i, 20].Value?.ToString( ).Trim( )
+                         semilarMemorandom        =  worksheet.Cells[ i, 2 ].Value?.ToString( ).Trim( ),
+                         followUpCompanion        =  worksheet.Cells[ i, 3 ].Value?.ToString( ).Trim( ),
+                         priority                 =  worksheet.Cells[ i, 4 ].Value?.ToString( ).Trim( ),
+                         fileAttachmentName       =  worksheet.Cells[ i, 5].Value?.ToString( ).Trim( )
                  });
             }
                 return memorandoms;

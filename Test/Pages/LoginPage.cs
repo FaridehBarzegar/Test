@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Test.Data.Object;
+using Test.Data.Objects;
 using Test.Public;
 
 namespace Test.Pages

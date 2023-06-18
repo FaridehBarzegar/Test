@@ -15,7 +15,7 @@ using NUnit.Framework;
 using OfficeOpenXml;
 using System.Reflection;
 using OpenQA.Selenium.DevTools.V111.Database;
-using Test.Data.Object;
+using Test.Data.Objects;
 
 namespace Test.Senario
 {
