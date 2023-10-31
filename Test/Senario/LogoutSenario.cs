@@ -1,23 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test.Data;
+﻿using OpenQA.Selenium;
+using Test.Data.Objects;
+using Test.Data.ReadData;
 using Test.Pages;
-using Test.Support;
+using Test.Tools.Senario;
 
 namespace Test.Senario
 {
-    public class LogoutSenario:TestBase
-    {
-        [Test]
-        public void LogoutSucceed( )
-        {
-            LoginPage loginPage = new LoginPage( driver );
-            loginPage.LoginSucceed( LoginData.userLoginAhmadi );
-            LogoutPage logoutPage = new LogoutPage( driver );
-            logoutPage.LogoutSucceed( );
-        }
-    }
+	[TestFixture]
+	public class LogoutSenario : TestsBase
+	{
+		public static void LogoutUser( UserLogin userLogin,IWebDriver webDriver )
+		{
+
+			LoginSenario.LoginSucceed( userLogin,webDriver );
+			// CartableSenario.BackToShell();
+			LogoutPage.LogoutSucceed( webDriver);
+			LoginPage.LoadPage(webDriver );
+		}
+
+		public static void QuickSignOut( UserLogin userLogin,IWebDriver webDriver )
+		{
+			LoginSenario.LoginSucceed( userLogin,webDriver );
+			ShellSenario.CartableLoad( );
+			CartablePage.ClickOnUserProfile( );
+			CartablePage.ClickOnSignOutButton( );
+			LoginPage.LoadPage( webDriver );
+		}
+	}
 }

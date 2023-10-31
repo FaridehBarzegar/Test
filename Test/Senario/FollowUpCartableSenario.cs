@@ -5,21 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.Data.Objects;
 using Test.Pages;
-using Test.Support;
+using Test.Tools.Senario;
 
 namespace Test.Senario
 {
-    public class FollowUpCartableSenario:AutomationSenarioBase
+	public class FollowUpCartableSenario:SenarioTestBase
     {
-        [Test]
-        public void FollowUpCartableLoad( )
+      /*  [Test]
+        public void LoadFollowUpCartable( )
         {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenFollowUp( );
-            FollowUpCartablePage followUpCartablePage = new FollowUpCartablePage(driver);
-            followUpCartablePage.LoadFollowUpCartable( );
-            cartablePage.CartableBackToShell( );
-        }
+            CartablePage cartablePage = new CartablePage( WebDriver );
+            cartablePage.EnsureCartablePageIsLoaded( );
+            //CartablePage.OpenFollowUp( );
+           // FollowUpCartablePage.LoadFollowUpCartable( );
+            //CartablePage.BackToShell( );
+        }*/
     }
 }

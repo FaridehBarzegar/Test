@@ -5,21 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test.Public;
+using Test.Tools;
 
 namespace Test.Pages
 {
-    public class LogoutPage
+	public static class LogoutPage
     {
-        private IWebElement m_BtnExit => driver.FindElement( By.XPath( "//a[contains(.,'خروج')]" ) );
-        private IWebDriver driver;
-        public LogoutPage(IWebDriver driver )
+        private static  IWebElement m_btnExit =>  Driver.Instance.FindElement( By.LinkText( "خروج" ));
+       
+        internal static void  LogoutSucceed( IWebDriver webDriver )
         {
-            this.driver = driver;
-        }
-        public void LogoutSucceed( )
-        {
-            driver.ImplicitWaitFor( 5 );
-            m_BtnExit.Click( );
+            m_btnExit.Click( );
+            IWebElement txtUserName= webDriver.WaitForLoadAnElementById("Username" , "UserName In LoginPage");
+            ErrorDetector.Detect();
+            Assert.That(txtUserName.Displayed,Is.EqualTo(true));
        }
 
     }

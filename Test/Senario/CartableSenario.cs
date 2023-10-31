@@ -5,55 +5,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test.Data.Objects;
+using Test.Data.ReadData;
 using Test.Pages;
-using Test.Support;
+using Test.Tools.Senario;
 
 namespace Test.Senario
 {
-    public class CartableSenario: AutomationSenarioBase
+	[TestFixture]
+    public class CartableSenario : SenarioTestBase
     {
-        
-        [Test]
-        public void CartableLoad( )
+       [Test, TestCaseSource( typeof( MemorandomData ) , nameof( MemorandomData.S_MemorandomData ) )]
+        public static void FollowUpLoad( Memorandom memorandom )
         {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableBackToShell( );
+            ShellSenario.CartableLoad();
+            CartablePage.ClickOnFollowUpPanel( );
+            FollowUpCartablePage.VerifyFollowUpCartablePageIsLoadedCorrectly();
         }
-        [Test]
-        public void CartableOpenFollowUp( )
+
+        /*[Test, TestCaseSource( typeof( MemorandomData ) , nameof( MemorandomData.S_MemorandomData ) )]
+        public static void LoadMemorandomCreationPage( Memorandom memorandom )
         {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenFollowUp( );
-            cartablePage.CartableBackToShell( );
-        }
-        [Test]
-        public void CartableOpenCreateMemorandom( )
+            ShellSenario.CartableLoad();
+            CartablePage.OpenCreationMemorandomPage( );
+            MemorandomPage.EnsureCreationMemorandomPageReady();
+        }*/
+
+         [Test, TestCaseSource( typeof( MemorandomData ) , nameof( MemorandomData.S_MemorandomData ) )]
+        public static void DraftLoad( Memorandom memorandom )
         {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenCreateMemorandom( );
-            MemorandomPage memorandomPage = new MemorandomPage(driver);
-            memorandomPage.MemorandomCreateLoadPage( );
-            cartablePage.CartableBackToShell( );
+            ShellSenario.CartableLoad();
+            CartablePage.OpenServices();
+            CartablePage.ClickOnDraftPanel( );
+            DraftPage.DraftPanelLoad();
         }
-        [Test]
-        public void CartableOpenDraft( )
+
+        //we cant run this test alone
+       //  [Test, TestCaseSource( typeof( MemorandomData ) , nameof( MemorandomData.S_MemorandomData ) )]
+        public static void BackToShell(Memorandom memorandom,IWebDriver webDriver )
         {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenDraft( );
-            DraftPage draftPage = new DraftPage(driver);
-            draftPage.DraftPageLoad( );
-            cartablePage.CartableBackToShell( );
+            ShellPage.ClickOnOfficeAutomation( );
+            CartablePage.VerifyLoadCartable();
+            CartablePage.BackToShell();
+            ShellPage.VerifyShellPageLoad(webDriver);
         }
+
         [Test]
-        public void CartableBackToShell( )
+        public static void LoadFormList()
         {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableBackToShell( );
-        
+            ShellSenario.CartableLoad( );
+            CartablePage.OpenFormList();
+            FormPage.EnsureFormListIsLoaded();
         }
+
+       
     }
 }

@@ -2,48 +2,42 @@
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using Test.Public;
+using Test.Tools;
 
 namespace Test.Pages
 {
-    public class DraftPage
+	public static class DraftPage
     {
-        private IWebDriver driver;
-        private  WebDriverWait webDriverWait;
-
-        public DraftPage( IWebDriver driver )
+        internal static  void DraftPanelLoad( )
         {
-            this.driver = driver;
-        }
-        private IWebElement m_BtnNewMemorandom => driver.FindElement( By.Id( "38153e8e-0e5e-4ad8-bc84-fa9e810023d2" ));
-        private IWebElement m_BtnNewOutgoingLetter => driver.FindElement( By.Id( "2bc68c0a-45b6-445d-910f-0813389ba951" ));
-        private IWebElement m_BtnNewInternalLetter => driver.FindElement( By.Id( "e6b0b89c-f8b3-40ca-8c13-935a9032c662" ));
-        private IWebElement m_BtnNewEform => driver.FindElement( By.Id( "43fa13dd-cb8f-4daf-be7a-c3712435c10b" ) );
-        private IWebElement m_BtnSettingButton => driver.FindElement( By.Id( "setting-button" ));
-        private IWebElement m_BtnSignOutIcon => driver.FindElement( By.Id( "signout-icon" ));
-        private IWebElement m_BtnMemorandomPanel => driver.FindElement( By.LinkText( "یادداشت اداری" ));
-
-
-        public void DraftPageLoad( )
-        {
-            CartablePage cartablePage = new CartablePage( driver );
-            IWebElement m_BtnNewOutgoingLetter1=WaitManagement.WaitForLoadAnElementById( driver, 7 ,"2bc68c0a-45b6-445d-910f-0813389ba951" );
-            Assert.AreEqual( "نامه صادره جدید", m_BtnNewOutgoingLetter1.Text );
-            Assert.AreEqual( "نامه داخلی جدید", m_BtnNewInternalLetter.Text );
-            Assert.AreEqual( "یادداشت اداری جدید", m_BtnNewMemorandom.Text );
-            Assert.AreEqual( "فرم جدید", m_BtnNewEform.Text );
-            Assert.AreEqual( true, m_BtnSettingButton.Displayed);
-            Assert.AreEqual( true, m_BtnSignOutIcon.Displayed);
-            Assert.AreEqual( true, m_BtnMemorandomPanel.Displayed);
-
+            Driver.Instance.ImplicitWaitFor("Load Draft PAnel");
+            IWebElement btnSettingButton      = Driver.Instance.FindElement( By.Id( "setting-button" ));
+            IWebElement btnSignOutIcon        = Driver.Instance.FindElement( By.Id( "signout-icon" ));
+            IWebElement btnMemorandomPanel    = Driver.Instance.FindElement( By.XPath("//dt[@data-cardtable-type='DraftMemorandum']"));
+            IWebElement btnNewMemorandom      = Driver.Instance.FindElement( By.Id( "38153e8e-0e5e-4ad8-bc84-fa9e810023d2" ));
+            IWebElement btnNewEform           = Driver.Instance.FindElement( By.Id( "43fa13dd-cb8f-4daf-be7a-c3712435c10b" ));
+            IWebElement btnNewInternalLetter  = Driver.Instance.FindElement( By.Id( "e6b0b89c-f8b3-40ca-8c13-935a9032c662" ));
+            IWebElement btnNewOutgoingLetter  = Driver.Instance.WaitForLoadAnElementById( "2bc68c0a-45b6-445d-910f-0813389ba951" ,"outgoingletter" );
+            ErrorDetector.Detect();
+            Assert.That( btnNewOutgoingLetter.Text , Is.EqualTo( "نامه صادره جدید" ));
+            Assert.That( btnNewInternalLetter.Text , Is.EqualTo( "نامه داخلی جدید" ));
+            Assert.That( btnNewMemorandom.Text , Is.EqualTo( "یادداشت اداری جدید" ));
+            Assert.That( btnNewEform.Text , Is.EqualTo( "فرم جدید" ));
+            Assert.That( btnSettingButton.Displayed , Is.EqualTo( true ));
+            Assert.That( btnSignOutIcon.Displayed , Is.EqualTo( true ));
+            Assert.That( btnMemorandomPanel.Displayed , Is.EqualTo( true ));
         }
 
-        public void OpenSuccedMemorandomDraft( )
+        internal static void ClickOnMemorandomDraftPanel( )
         {
-            IWebElement m_BtnMemorandomPanel= WaitManagement.WaitForLoadAnElementByLinkText( driver, 7 ,"یادداشت اداری");
+            IWebElement m_BtnMemorandomPanel= Driver.Instance.WaitForLoadAnElementByLinkText( "یادداشت اداری" ,"draftMemorandomPanel" );
             m_BtnMemorandomPanel.Click( );
-            Assert.AreEqual( "یادداشت اداری", m_BtnMemorandomPanel.Text);
         }
 
-       
+        internal static void ClickOnFormDraftPanel( )
+        {
+            IWebElement btnEFormPanel= Driver.Instance.WaitForLoadAnElementByLinkText( "فرم اداری" ,"draftEFormPanel" );
+            btnEFormPanel.Click( );
+        }
     }
 }

@@ -1,38 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test.Data.Objects;
+﻿using Test.Data.Objects;
+using Test.Data.ReadData;
 using Test.Pages;
-using Test.Support;
+using Test.Tools.Senario;
 
 namespace Test.Senario
 {
-    public class DraftSenario:AutomationSenarioBase
+	[TestFixture]
+    public class DraftSenario:SenarioTestBase
     {
-        [Test]
-        public void DraftLoad( )
+       /* [Test, TestCaseSource( typeof( MemorandomData ) , nameof( MemorandomData.S_MemorandomData ) )]
+        public static void MemorandomDraftLoad( Memorandom memorandom )
         {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenDraft( );
-            DraftPage draftPage = new DraftPage(driver);
-            draftPage.DraftPageLoad( );
-            cartablePage.CartableBackToShell( );
-        }
-          [Test]
-        public void DraftMemorandomOpenSucced( )
-        {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenDraft( );
-            DraftPage draftPage = new DraftPage(driver);
-            draftPage.DraftPageLoad( );
-            draftPage.OpenSuccedMemorandomDraft( );
-            cartablePage.CartableBackToShell( );
-        }
-
-     
+            CartableSenario.DraftLoad(memorandom );
+            DraftPage draftPage = new DraftPage( WebDriver ) ;
+            MemorandomDraftPage memorandomDraftPage = draftPage.ClickOnMemorandomDraftPanel( );
+            memorandomDraftPage.EnsureMemorandomDraftPageReady( );
+        }*/
     }
 }

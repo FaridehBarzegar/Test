@@ -1,55 +1,81 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Test.Data.Objects;
 using Test.Public;
+using Test.Tools;
 
 namespace Test.Pages
 {
-    public class LoginPage
-    {
-        private IWebDriver driver;
-        private IWebElement m_Txtusername => driver.FindElement( By.Name( "Username" ));
-        private IWebElement m_Txtpassword => driver.FindElement( By.Id( "Password" ));
-        private IWebElement m_Btnlogin => driver.FindElement( By.Id( "login-button" ));
-        private IWebElement m_LinkForgotPassword => driver.FindElement( By.Id( "ForgetPasword_link" ));
-        private IWebElement m_LabelVersionNumber => driver.FindElement( By.LinkText( "1.000.00 : ویرایش" ));
-        private IWebElement m_LabelEnglishLanguage => driver.FindElement( By.LinkText( "English" ));
-        private IWebElement m_LabelPersianLanguage => driver.FindElement( By.LinkText( "فارسی" ));
-        public LoginPage( IWebDriver driver )
-        {
-            this.driver = driver;
-        }
+	public class LoginPage
+	{
+		public string Username
+		{
+			get; set;
+		}
+		public string Password
+		{
+			get; set;
+		}
 
-        public void LoginLoadPage( )
-        {
-            driver.WaitForPageLoad( 5 );
-            Assert.AreEqual( true, m_Txtusername.Displayed );
-            Assert.AreEqual( true, m_Txtpassword.Displayed );
-            Assert.AreEqual( true, m_Btnlogin.Displayed );
-            Assert.AreEqual( "رمز عبور را فراموش کرده ام", m_LinkForgotPassword.Text );
-            Assert.AreEqual( "1.000.00 : ویرایش", m_LabelVersionNumber.Text );
-            Assert.AreEqual( "فارسی", m_LabelPersianLanguage.Text );
-            Assert.AreEqual( "English", m_LabelEnglishLanguage.Text );
-        }
-        public void LoginSucceed( UserLogin userLogin )
-        {
-            driver.WaitForPageLoad( 5 );
-            m_Txtusername.SendKeys( userLogin.userName );
-            m_Txtpassword.SendKeys( userLogin.password );
-            m_Btnlogin.Click( );
-            try
-            {
-                driver.SwitchTo( ).Alert( ).Accept( );
-            }
-            catch ( NoAlertPresentException ex )
-            {
-                string m_txtShellHeader = driver.FindElement(By.ClassName("top-Payvast-Title")).Text;
-                StringAssert.AreEqualIgnoringCase( "سازمان الکترونیک پیوست", m_txtShellHeader );
-            }
-        }
-    }
+
+		private static IWebElement m_btnLogIn => Driver.Instance.FindElement( By.Id( "login-button" ) );
+		private static IWebElement m_linkForgotPassword => Driver.Instance.FindElement( By.Id( "ForgetPasword_link" ) );
+		private static IWebElement m_labelVersionNumber => Driver.Instance.FindElement( By.LinkText( "1.000.00 : ویرایش" ) );
+		private static IWebElement m_labelEnglishLanguage => Driver.Instance.FindElement( By.LinkText( "English" ) );
+		private static IWebElement m_labelPersianLanguage => Driver.Instance.FindElement( By.LinkText( "فارسی" ) );
+
+		internal static void LoadPage( IWebDriver driver )
+		{
+			IWebElement txtUserName = driver.FindElement( By.Id( "Username" ) );
+			IWebElement txtPassword = driver.FindElement( By.Id( "Password" ) );
+			driver.ImplicitWaitFor( "Login Page" );
+			ErrorDetector.Detect( );
+			Assert.That( txtUserName.Displayed, Is.EqualTo( true ) );
+			Assert.That( txtPassword.Displayed, Is.EqualTo( true ) );
+			Assert.That( m_btnLogIn.Displayed, Is.EqualTo( true ) );
+			Assert.That( m_linkForgotPassword.Text, Is.EqualTo( "رمز عبور را فراموش کرده ام" ) );
+			Assert.That( m_labelVersionNumber.Text, Is.EqualTo( "1.000.00 : ویرایش" ) );
+			Assert.That( m_labelPersianLanguage.Text, Is.EqualTo( "فارسی" ) );
+			Assert.That( m_labelEnglishLanguage.Text, Is.EqualTo( "English" ) );
+		}
+
+		internal static void FillUserName( string userName,IWebDriver driver )
+		{
+			IWebElement txtUserName = driver.FindElement( By.Id( "Username" ) );
+			IWebElement txtPassword = driver.FindElement( By.Id( "Password" ) );
+			txtUserName.Click( );
+			txtUserName.SendKeys( userName );
+		}
+
+		internal static void FillPassword( string userpassword,IWebDriver driver )
+		{
+			IWebElement txtUserName = driver.FindElement( By.Id( "Username" ) );
+			IWebElement txtPassword = driver.FindElement( By.Id( "Password" ) );
+			txtPassword.Click( );
+			txtPassword.SendKeys( userpassword );
+		}
+
+		internal static void ClickOnLogInButton( IWebDriver driver )
+		{
+			m_btnLogIn.Click( );
+			driver.ImplicitWaitFor( PageEnums.ShellPage.ToString( ) );
+
+			try
+			{
+				driver.SwitchTo( ).Alert( ).Accept( );
+			}
+			catch { }
+		}
+		//public void CheckUserIsLogin( )
+		//{
+		//    try
+		//    {
+		//        Driver.Instance.SwitchTo().Alert().Accept();
+		//    }
+		//    catch( NoAlertPresentException ex )
+		//    {
+		//        string m_txtShellHeader = Driver.Instance.FindElement(By.ClassName("top-Payvast-Title")).Text;
+		//        StringAssert.AreEqualIgnoringCase( "سازمان الکترونیک پیوست" , m_txtShellHeader );
+		//    }
+		//}
+	}
 }

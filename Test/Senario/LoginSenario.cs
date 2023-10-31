@@ -1,41 +1,27 @@
-﻿
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test.Pages;
-using Test.Support;
-using Test.Data;
-
-
-
-using NUnit.Framework;
-using OfficeOpenXml;
-using System.Reflection;
-using OpenQA.Selenium.DevTools.V111.Database;
+﻿using Test.Pages;
 using Test.Data.Objects;
+using Test.Data.ReadData;
+using Test.Tools.Senario;
+using OpenQA.Selenium;
 
 namespace Test.Senario
 {
-    public class LoginSenario:TestBase
+	[TestFixture]
+    public class LoginSenario
     {
-        [Test]
-        public void LoadLoginPage( )
-        {
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.LoginLoadPage( );
-        }
-       [Test,TestCaseSource (typeof(LoginData),nameof(LoginData.S_UserLoginData))]
-       // [Test,TestCaseSource( typeof( LoginData ), nameof( LoginData.roots ))]
-        public void LoginSucceed(UserLogin userLogin)
-        {
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.LoginLoadPage( );
-            loginPage.LoginSucceed( userLogin );
-            driver.Manage( ).Timeouts( ).ImplicitWait = TimeSpan.FromSeconds( 5 );
 
+        public static void LoadLoginPage(IWebDriver webDriver )
+        {
+            LoginPage.LoadPage(webDriver);
+        }
+
+        public static void LoginSucceed( UserLogin userLogin , IWebDriver webDriver )
+        {
+            LoadLoginPage(webDriver);
+            LoginPage.FillUserName( userLogin.UserName,webDriver );
+            LoginPage.FillPassword( userLogin.Password,webDriver );
+            LoginPage.ClickOnLogInButton( webDriver );
+            ShellPage.VerifyShellPageLoad(webDriver);
         }
     }
 }

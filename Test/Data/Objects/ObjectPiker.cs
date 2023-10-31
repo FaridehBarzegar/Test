@@ -121,7 +121,20 @@ namespace Test.Data.Objects
         public string searchResultTranscriptReciver2FromPersonelList
         {
             get; set;
-        }public string transcriptOrder2
+        }
+        public string transcriptOrder2
+        {
+            get; set;
+        }
+        public string userLoginReciver
+        {
+            get; set;
+        }
+        public string userLoginTranscriptReciver
+        {
+            get; set;
+        }
+        public string userLoginTranscriptReciver2
         {
             get; set;
         }

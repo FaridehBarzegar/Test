@@ -1,90 +1,75 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test.Data.Objects;
 using Test.Public;
 
 namespace Test.Pages
 {
     public class MemorandomDraftPage
     {
-        private IWebDriver driver;
-        private WebDriverWait webDriverWait;
-        private IWebElement m_BtnNewMemorandom                            => driver.FindElement( By.Id( "38153e8e-0e5e-4ad8-bc84-fa9e810023d2" ));
-        private IWebElement m_BtnNewOutgoingLetter                        => driver.FindElement( By.Id( "2bc68c0a-45b6-445d-910f-0813389ba951" ));
-        private IWebElement m_BtnNewInternalLetter                        => driver.FindElement( By.Id( "e6b0b89c-f8b3-40ca-8c13-935a9032c662" ));
-        private IWebElement m_BtnNewEform                                 => driver.FindElement( By.Id( "43fa13dd-cb8f-4daf-be7a-c3712435c10b" ) );
-        private IWebElement m_BtnMemorandomEdit                           => driver.FindElement( By.Id( "a47c6a87-7acc-4188-ad43-85aec131fdb3" ) );
-         private IWebElement m_ObjTo                                      => driver.FindElement( By.Id( "To_text" ) );
-        private IWebElement m_ObjTranscriptItems0TranscriptToAsPosition   => driver.FindElement( By.Id( "TranscriptItems_0_TranscriptToAsPosition_text" ) );
-        private IWebElement m_TxtTranscriptItems0TranscriptReason         => driver.FindElement( By.Id( "TranscriptItems_0__TranscriptReason" ) );
-        private IWebElement m_BtnAdd                                      => driver.FindElement( By.Id( "add" ) );
-        private IWebElement m_ChckCopyMemorandom                          => driver.FindElement( By.XPath( "//div[@id='memorandum-button-wrapper']/div[1]/div[@class='table-cell']" ) );
-        // private IWebElement m_ChckAdditionalData_HasTranscriptFollowUp => driver.FindElement( By.XPath( "//div[@class='icheckbox_minimal-purple checked']/ins[@class='iCheck-helper']" ));
-        private IWebElement m_Txtmemorandumtitle                          => driver.FindElement( By.Id( "memorandum-title" ) );
-        private IWebElement m_Btnimportanceflag                           => driver.FindElement( By.ClassName( "importance-flag" ) );
-        private IWebElement m_CkEditor                                    => driver.FindElement( By.Id( "cke_1_top" ) );
-        private IWebElement m_ContentMemorandom                           => driver.FindElement( By.CssSelector( "#cke_1_contents > iframe" ) );
+     /*   private  IWebDriver Driver.Instance;
+        private  WebDriverWait webDriverWait;
+        private  IWebElement m_btnNewMemorandom                            => Driver.Instance.FindElement( By.Id( "38153e8e-0e5e-4ad8-bc84-fa9e810023d2" ));
+        private  IWebElement m_btnNewOutgoingLetter                        => Driver.Instance.FindElement( By.Id( "2bc68c0a-45b6-445d-910f-0813389ba951" ));
+        private  IWebElement m_btnNewInternalLetter                        => Driver.Instance.FindElement( By.Id( "e6b0b89c-f8b3-40ca-8c13-935a9032c662" ));
+        private  IWebElement m_btnNewForm                                 => Driver.Instance.FindElement( By.Id( "43fa13dd-cb8f-4daf-be7a-c3712435c10b" ));
+        private  IWebElement m_btnView                                    => Driver.Instance.FindElement( By.Id( "6b343511-b47a-4469-9a4c-778c91d7a5b0-label" ) );
+        private  IWebElement m_btnEdit                                    => Driver.Instance.FindElement( By.Id( "a47c6a87-7acc-4188-ad43-85aec131fdb3-label" ) );
+        private  IWebElement m_btnDelete                                    => Driver.Instance.FindElement( By.Id( "b1d2bf73-f21e-418d-8be0-b8039bb391ec-label" ) );
 
-        public MemorandomDraftPage(IWebDriver driver )
+        public MemorandomDraftPage( IWebDriver driver )
         {
-            this.driver = driver;
-
+            Driver.Instance = driver;
         }
-         public void DraftMemorandomLoaded( )
+         public  void EnsureMemorandomDraftPageReady( )
         {
-            driver.ImplicitWaitFor( 7 );
-            CartablePage cartablePage = new CartablePage( driver );
-            IWebElement m_BtnNewOutgoingLetter = WaitManagement.WaitForLoadAnElementById( driver , 7,"2bc68c0a-45b6-445d-910f-0813389ba951" );
-            Assert.AreEqual( "نامه صادره جدید", m_BtnNewOutgoingLetter.Text );
-            Assert.AreEqual( "نامه داخلی جدید", m_BtnNewInternalLetter.Text );
-            Assert.AreEqual( "یادداشت اداری جدید", m_BtnNewMemorandom.Text );
-            Assert.AreEqual( "فرم جدید", m_BtnNewEform.Text );
-            IWebElement m_BtnMemorandomPanel=  WaitManagement.WaitForLoadAnElementByLinkText( driver , 7, "یادداشت اداری" );
-            Assert.AreEqual( true, m_BtnMemorandomPanel.Displayed);
-            
-        }
-        public void DraftMemorandomEditPageLoad( )
-        {
-            driver.FindElement(By.Id("1")).Click();
-            driver.ImplicitWaitFor( 5 );
-            m_BtnMemorandomEdit.Click();
-            IWebElement m_ObjTo=WaitManagement.WaitForLoadAnElementById( driver, 7 ,"To_text" );
-            Assert.AreEqual(true,m_ObjTo.Displayed);
-            Assert.AreEqual(true,m_Txtmemorandumtitle.Displayed);
-            Assert.AreEqual(true,m_CkEditor.Displayed);
-            
+            IWebElement m_btnNewOutgoingLetter =Driver.Instance.WaitForLoadAnElementById( "2bc68c0a-45b6-445d-910f-0813389ba951" , "newOutgoigLetter" );
+            IWebElement m_btnNewInternalLetter = Driver.Instance.WaitForLoadAnElementById(  "e6b0b89c-f8b3-40ca-8c13-935a9032c662" ,"newInternalLetter" );
+            IWebElement m_btnNewMemorandom = Driver.Instance.WaitForLoadAnElementById(  "38153e8e-0e5e-4ad8-bc84-fa9e810023d2" ,"newMemorandom" );
+            IWebElement m_btnNewForm = Driver.Instance.WaitForLoadAnElementById(  "43fa13dd-cb8f-4daf-be7a-c3712435c10b" ,"newForm" );
+            Assert.That( m_btnNewOutgoingLetter.Text ,Is.EqualTo( "نامه صادره جدید" ));
+            Assert.That( m_btnNewInternalLetter.Text , Is.EqualTo( "نامه داخلی جدید" ));
+            Assert.That( m_btnNewMemorandom.Text , Is.EqualTo( "یادداشت اداری جدید" ));
+            Assert.That( m_btnNewForm.Text  , Is.EqualTo( "فرم جدید" ));
+            IWebElement m_btnMemorandomPanel=  Driver.Instance.WaitForLoadAnElementByLinkText( "یادداشت اداری" ,"memorandomPanel");
+            Assert.That(  m_btnMemorandomPanel.Displayed , Is.EqualTo( true ));
         }
 
-        public void DraftMemorandomShowPageLoad( Memorandom memorandom , ObjectPiker objectPiker )
+         public void EnsureMemorandomISSave( string memorandomTitle )
         {
-           driver.FindElement(By.Id( "1" )).Click();
-           driver.ImplicitWaitFor( 5 );
-           driver.FindElement( By.Id( "6b343511-b47a-4469-9a4c-778c91d7a5b0-label " )).Click( );
-           driver.ImplicitWaitFor( 5 );
-           IWebElement memorandomTitle       = driver.FindElement(By.XPath($"//span[contains(@class,'title-text')]  [contains(text(),'{memorandom.memorandomTitle}')]"));
-           IWebElement memmorandomReciver    = driver.FindElement(By.XPath($"//span[contains(text(),'{objectPiker.reciver}')]"));
-           IWebElement memorandomAttahment   = driver.FindElement(By.XPath($"//a[contains(text(),'{memorandom.fileAttachmentName}')]"));
-           IWebElement memorandomDiscreption = driver.FindElement(By.XPath($"//span[contains(text(),'{memorandom.discreption}')]"));
-           Assert.That( memorandomTitle.Displayed ,Is.EqualTo( true ));
-           Assert.That( memmorandomReciver.Displayed ,Is.EqualTo( true ));
-           Assert.That( memorandomAttahment.Displayed ,Is.EqualTo( true ));
-           Assert.That( memorandomDiscreption.Displayed ,Is.EqualTo( true ));
+            DateTime fromDateTime = DateTime.Now;
+            string persianFromDate = Utility.ConvertDateToPersianDate( fromDateTime );
+            IWebElement title = Driver.Instance.FindElement( By.XPath( $"//tr[contains(.,'{memorandomTitle}')]" ) );
+            var producedate = Driver.Instance.FindElement( By.XPath( $"//*[contains(text() ,'{persianFromDate}')]" ) );
+            Assert.That( producedate.Displayed , Is.EqualTo( true ) );
+            Assert.That( title.Displayed , Is.EqualTo( true ) );
+        }
 
+        public void ClickMemorandomInList( )
+        {
+            Driver.Instance.FindElement( By.Id( "1" )).Click( );
+            IWebElement m_btnView = Driver.Instance.WaitForLoadAnElementById( "6b343511-b47a-4469-9a4c-778c91d7a5b0-label" , "viewCommand" );
+            Assert.That( m_btnView.Displayed , Is.EqualTo( true));
+            Assert.That( m_btnEdit.Displayed , Is.EqualTo( true));
+            Assert.That( m_btnDelete.Displayed , Is.EqualTo( true));
+
+        }
+
+        public MemorandomViewPage ClickOnViewCommand( )
+        {
+            m_btnView.Click( );
+            Driver.Instance.ImplicitWaitFor(PageEnums.memorandomView.ToString());
+            return new MemorandomViewPage( Driver.Instance );
+
+        }
+
+       
+        // public  void SendMemorandomInDraft( )
+        //{
+        //   Driver.Instance.FindElement( By.Id( "7f4bc636-4abb-41f1-82f9-d0ed7c036819" )).Click();
+        //   Driver.Instance.ImplicitWaitFor( 5 );
+        //   Driver.Instance.FindElement(By.Id("1")).Click();
+        //   Driver.Instance.ImplicitWaitFor( 5 );
            
-        }
-         public void SendMemorandomInDraft( )
-        {
-           driver.FindElement( By.Id( "7f4bc636-4abb-41f1-82f9-d0ed7c036819" )).Click();
-           driver.ImplicitWaitFor( 5 );
-           driver.FindElement(By.Id("1")).Click();
-           driver.ImplicitWaitFor( 5 );
-           
-        }
+        //}*/
     }
 }

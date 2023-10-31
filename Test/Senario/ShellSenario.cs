@@ -1,42 +1,18 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test.Data;
+﻿using Test.Data;
+using Test.Data.Objects;
 using Test.Pages;
-using Test.Support;
-
+using Test.Tools.Senario;
 
 namespace Test.Senario
 {
-    public class ShellSenario : TestBase
+	[TestFixture]
+    public class ShellSenario : SenarioTestBase
     {
         [Test]
-        public void ShellLoadPage( )
+        public static void CartableLoad( )
         {
-            LoginPage loginPage= new LoginPage(driver);
-            loginPage.LoginSucceed( LoginData.userLoginAhmadi );
-            ShellPage shellPage = new ShellPage(driver);
-            shellPage.ShellLoadPage();
-            LogoutPage logoutPage = new LogoutPage(driver);
-            logoutPage.LogoutSucceed( );
-        }
-
-        [Test]
-        public void ShellOpenOfficeAutomation( )
-        {
-            LoginPage loginPage= new LoginPage( driver );
-            loginPage.LoginSucceed( LoginData.userLoginAhmadi );
-            ShellPage shellPage = new ShellPage( driver );
-            shellPage.ShellLoadPage( );
-            shellPage.OpenOfficeAutomation( );
-            CartablePage cartablePage = new CartablePage( driver );
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableBackToShell( );
-            LogoutPage logoutPage = new LogoutPage( driver );
-            logoutPage.LogoutSucceed( );
+            ShellPage.ClickOnOfficeAutomation( );
+            CartablePage.VerifyLoadCartable( );
         }
     }
 }

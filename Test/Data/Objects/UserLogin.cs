@@ -8,11 +8,11 @@ namespace Test.Data.Objects
 {
     public class UserLogin
     {
-        public string userName
+        public string UserName
         {
             get; set;
         }
-        public string password
+        public string Password
         {
             get; set;
         }

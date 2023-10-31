@@ -4,56 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test.Data.Objects;
+using Test.Data.ReadData;
 using Test.Pages;
-using Test.Support;
+using Test.Tools.Senario;
 
 namespace Test.Senario
 {
-       
-    public class MemorandomDraftSenario:AutomationSenarioBase
+	[TestFixture]   
+    public class MemorandomDraftSenario:SenarioTestBase
     {   
-
-        [Test]
-        public void MemorandomDraftLoad( )
+        
+      /*  [Test,TestCaseSource(typeof(MemorandomData),nameof(MemorandomData.S_MemorandomData))]
+        public static void MemorandomViewPageLoad( Memorandom memorandom )
         {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenDraft( );
-            DraftPage draftPage = new DraftPage(driver);
-            draftPage.DraftPageLoad( );
-            draftPage.OpenSuccedMemorandomDraft();
-            MemorandomDraftPage memorandomDraftPage = new MemorandomDraftPage(driver);
-            memorandomDraftPage.DraftMemorandomLoaded();
-            cartablePage.CartableBackToShell( );
+            DraftSenario.MemorandomDraftLoad(   memorandom);
+            MemorandomDraftPage memorandomDraftPage = new MemorandomDraftPage(WebDriver);
+            memorandomDraftPage.ClickMemorandomInList( );
+            MemorandomViewPage memorandomViewPage = memorandomDraftPage.ClickOnViewCommand( );
+            memorandomViewPage.EnsureMemorandomViewPageLoad( memorandom );
         }
-        [Test]
-        public void MemorandomDraftEditPageLoad( )
-        {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenDraft( );
-            DraftPage draftPage = new DraftPage(driver);
-            draftPage.DraftPageLoad( );
-            draftPage.OpenSuccedMemorandomDraft( );
-            MemorandomDraftPage memorandomDraftPage = new MemorandomDraftPage(driver);
-            memorandomDraftPage.DraftMemorandomLoaded();
-            memorandomDraftPage.DraftMemorandomEditPageLoad( );
-            cartablePage.CartableBackToShell( );
-        }
-         [Test]
-        public void SendMemorandomInDraft( )
-        {
-            CartablePage cartablePage = new CartablePage(driver);
-            cartablePage.CartableLoaded( );
-            cartablePage.CartableOpenDraft( );
-            DraftPage draftPage = new DraftPage(driver);
-            draftPage.DraftPageLoad( );
-             draftPage.OpenSuccedMemorandomDraft( );
-            MemorandomDraftPage memorandomDraftPage = new MemorandomDraftPage(driver);
-            memorandomDraftPage.DraftMemorandomLoaded();
-            memorandomDraftPage.DraftMemorandomEditPageLoad( );
-            memorandomDraftPage.SendMemorandomInDraft( );
-            cartablePage.CartableBackToShell( );
-        }
-    }
-}
+        //[Test]
+        //public void SendMemorandomInDraft( )
+       // {
+        // LoadMemorandomDraftList( );
+        //MemorandomActionsPage.MemorandomEditPageLoad( );
+        //MemorandomDraftPcccccccccccccccccccccccccccc
+   // }
+      */
+    
+} }

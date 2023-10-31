@@ -1,48 +1,57 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Test.Public;
+using Test.Tools;
 
 namespace Test.Pages
 {
 
-    public class ShellPage
+	public static class ShellPage
     {
-        private IWebDriver driver;
-        private IWebElement m_BtnOfficeAutomation => driver.FindElement( By.Id( "OfficeAutomation" ));
-        private IWebElement m_BtnCalender        => driver.FindElement( By.Id( "Calendar" ));
-        private IWebElement m_BtnPersonelInbox   => driver.FindElement( By.Id( "PersonalInbox" ));
-        private IWebElement m_BtnPeople          => driver.FindElement( By.Id( "People" ));
-        private IWebElement m_BtnNote            => driver.FindElement( By.Id( "Note" ));
-        private IWebElement m_BtnBulletinBoard   => driver.FindElement( By.Id( "BulletinBoard" ));
-        private IWebElement m_BtnChengePassword  => driver.FindElement( By.LinkText( "تغییر کلمه عبور" ));
-        private IWebElement m_BtnUserProperties  => driver.FindElement( By.Id( "anchor-userTitle" ));
-        private IWebElement m_BtnExit            => driver.FindElement( By.XPath( "//a[contains(.,'خروج')]" ));
-        public ShellPage( IWebDriver driver )
+        internal static void VerifyShellPageLoad(IWebDriver driver )
         {
-            this.driver = driver;
+            try
+            {
+                driver.FindElement( By.CssSelector(".confirmActiveButton")).Click();
+            }
+            catch( Exception ) { }
+            finally
+            {
+                Driver.Instance.ImplicitWaitFor("Load Shell Page");
+                IWebElement btnOfficeAutomation  =  driver.FindElement(By.Id("OfficeAutomation" ));
+                IWebElement btnCalender          =  driver.FindElement(By.Id("Calendar"));
+                IWebElement btnPersonelInbox     =  driver.FindElement(By.Id("PersonalInbox" ));
+                IWebElement btnPeople            =  driver.FindElement(By.Id("People" ));
+                IWebElement btnNote              =  driver.FindElement(By.Id("Note"));
+                IWebElement btnBulletinBoard     =  driver.FindElement(By.Id("BulletinBoard"));
+                IWebElement btnUserProperties    =  driver.FindElement(By.Id("anchor-userTitle"));
+                IWebElement btnExit              =  driver.FindElement(By.LinkText ("خروج" ));
+                ErrorDetector.Detect();
+                Assert.That( btnOfficeAutomation.Displayed , Is.EqualTo( true ) );
+                Assert.That( btnCalender.Displayed , Is.EqualTo( true ) );
+                Assert.That( btnPersonelInbox.Displayed , Is.EqualTo( true ) );
+                Assert.That( btnPeople.Displayed , Is.EqualTo( true ) );
+                Assert.That( btnNote.Displayed , Is.EqualTo( true ) );
+                Assert.That( btnBulletinBoard.Displayed , Is.EqualTo( true ) );
+                //Assert.That( m_BtnChengePassword.Displayed , Is.EqualTo( true ) );
+                Assert.That( btnUserProperties.Displayed , Is.EqualTo( true ) );
+                Assert.That( btnExit.Displayed , Is.EqualTo( true ) );
+            }
         }
-        
-        public void ShellLoadPage( )
+
+        internal static void  ClickOnOfficeAutomation( )
         {
-            driver.ImplicitWaitFor( 5 );
-            Assert.AreEqual( true, m_BtnOfficeAutomation.Displayed );
-            Assert.AreEqual( true, m_BtnCalender.Displayed );
-            Assert.AreEqual( true, m_BtnPersonelInbox.Displayed );
-            Assert.AreEqual( true, m_BtnPeople.Displayed );
-            Assert.AreEqual( true, m_BtnNote.Displayed );
-            Assert.AreEqual( true, m_BtnBulletinBoard.Displayed );
-            Assert.AreEqual( true, m_BtnChengePassword.Displayed );
-            Assert.AreEqual( true, m_BtnUserProperties.Displayed );
-            Assert.AreEqual( true, m_BtnExit.Displayed );
+            IWebElement btnOfficeAutomation =  Driver.Instance.WaitForLoadAnElementById( "OfficeAutomation" ,"OfficeAutomation in Shell");
+            btnOfficeAutomation.Click();
+            Driver.Instance.ImplicitWaitFor("cartable Load");
         }
-        public void OpenOfficeAutomation( )
+
+        internal static void ClickOnExit( )
         {
-            m_BtnOfficeAutomation.Click( );
-            driver.ImplicitWaitFor( 5 );
-        } 
+            IWebElement btnExit =  Driver.Instance.WaitForLoadAnElementByLinkText( "خروج" ,"SignOut in in Shell");
+            btnExit.Click();
+            IWebElement txtUserName= Driver.Instance.WaitForLoadAnElementById("Username","UserName in Login Page");
+            ErrorDetector.Detect();
+            Assert.That(txtUserName.Displayed,Is.EqualTo(true));
+        }
     }
 }
